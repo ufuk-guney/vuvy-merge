@@ -63,4 +63,5 @@ public enum EventType
     OnLevelStartClick,
     OnGenerateClick,
     OnReturnHomeClick,
+    OnMerge,
 }

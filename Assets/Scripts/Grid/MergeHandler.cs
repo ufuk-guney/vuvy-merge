@@ -40,6 +40,9 @@ public class MergeHandler
 
         _itemFactory.SpawnItem(chainData.ChainType, nextLevel, dropPos);
 
+        int score = (nextLevel) * 10;
+        EventManager.Trigger(EventType.OnMerge, score);
+
         return true;
     }
 }
