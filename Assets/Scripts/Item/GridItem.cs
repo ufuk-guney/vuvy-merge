@@ -1,25 +1,19 @@
 using UnityEngine;
 
-public class GridItem : MonoBehaviour, IGridItem
+public class GridItem : MonoBehaviour, IGridItemView
 {
     [SerializeField] private SpriteRenderer _spriteRenderer;
 
-    public ItemChainType ChainType { get; private set; }
-    public int Level { get; private set; }
     public Transform Transform => transform;
     public SpriteRenderer SpriteRenderer => _spriteRenderer;
 
-    public void Setup(ItemChainType chainType, Sprite sprite, int level)
+    public void ApplyVisual(Sprite sprite)
     {
-        ChainType = chainType;
-        Level = level;
         _spriteRenderer.sprite = sprite;
     }
 
-    public void ResetItem()
+    public void ResetView()
     {
         _spriteRenderer.sprite = null;
-        ChainType = default;
-        Level = 0;
     }
 }

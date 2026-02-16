@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class GridStateManager
 {
-    private IGridItem[,] _grid;
+    private GridItemData?[,] _dataGrid;
+    private IGridItemView[,] _viewGrid;
     private readonly List<Vector2Int> _emptyPositions = new();
     private int _width;
     private int _height;
@@ -12,7 +13,8 @@ public class GridStateManager
     {
         _width = gridData.Width;
         _height = gridData.Height;
-        _grid = new IGridItem[_width, _height];
+        _dataGrid = new GridItemData?[_width, _height];
+        _viewGrid = new IGridItemView[_width, _height];
 
         _emptyPositions.Clear();
         for (int x = 0; x < _width; x++)
@@ -20,7 +22,6 @@ public class GridStateManager
                 _emptyPositions.Add(new Vector2Int(x, y));
     }
 
-    //grid üzerinde boş slot aransa 0(n2), emptyPositions o(n)
     public bool TryGetEmptyPosition(out Vector2Int position)
     {
         if (_emptyPositions.Count == 0)
@@ -33,21 +34,28 @@ public class GridStateManager
         return true;
     }
 
-    public void PlaceItem(Vector2Int pos, IGridItem item)
+    public void PlaceItem(Vector2Int pos, GridItemData data, IGridItemView view)
     {
-        _grid[pos.x, pos.y] = item;
+        _dataGrid[pos.x, pos.y] = data;
+        _viewGrid[pos.x, pos.y] = view;
         _emptyPositions.Remove(pos);
     }
 
     public void RemoveItem(Vector2Int pos)
     {
-        _grid[pos.x, pos.y] = null;
+        _dataGrid[pos.x, pos.y] = null;
+        _viewGrid[pos.x, pos.y] = null;
         _emptyPositions.Add(pos);
     }
 
-    public IGridItem GetItemAt(Vector2Int pos)
+    public GridItemData? GetDataAt(Vector2Int pos)
     {
-        return _grid[pos.x, pos.y];
+        return _dataGrid[pos.x, pos.y];
+    }
+
+    public IGridItemView GetViewAt(Vector2Int pos)
+    {
+        return _viewGrid[pos.x, pos.y];
     }
 
     public bool IsValidPosition(Vector2Int pos)
@@ -57,14 +65,15 @@ public class GridStateManager
 
     public bool IsEmpty(Vector2Int pos)
     {
-        return _grid[pos.x, pos.y] == null;
+        return !_dataGrid[pos.x, pos.y].HasValue;
     }
 
     public void MoveItem(Vector2Int from, Vector2Int to)
     {
-        var item = _grid[from.x, from.y];
-        _grid[from.x, from.y] = null;
-        _grid[to.x, to.y] = item;
+        _dataGrid[to.x, to.y] = _dataGrid[from.x, from.y];
+        _viewGrid[to.x, to.y] = _viewGrid[from.x, from.y];
+        _dataGrid[from.x, from.y] = null;
+        _viewGrid[from.x, from.y] = null;
 
         _emptyPositions.Add(from);
         int index = _emptyPositions.IndexOf(to);

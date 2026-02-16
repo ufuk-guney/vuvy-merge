@@ -26,20 +26,12 @@ public class GridScope : IInitializable, IDisposable
             builder.Register<TileHandler>(Lifetime.Scoped);
             builder.Register<GridStateManager>(Lifetime.Scoped);
 
-            builder.Register(container =>
-            {
-                var db = container.Resolve<BoardItemConfig>();
-                var scope = container.Resolve<LifetimeScope>();
-                var prefab = db.ItemPrefab;
-                return new ObjectPool<GridItem>(prefab, scope.transform, 10);
-            }, Lifetime.Scoped);
-
             builder.Register<DragHandler>(Lifetime.Scoped);
             builder.Register<DropHandler>(Lifetime.Scoped);
             builder.Register<MergeHandler>(Lifetime.Scoped);
 
             builder.RegisterEntryPoint<GridInitializer>();
-            builder.RegisterEntryPoint<ItemSpawner>();
+            builder.RegisterEntryPoint<ItemFactory>().AsSelf();
             builder.RegisterEntryPoint<GridInputController>();
         });
     }

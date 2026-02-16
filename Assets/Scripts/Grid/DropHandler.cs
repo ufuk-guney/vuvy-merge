@@ -11,40 +11,42 @@ public class DropHandler
         _mergeHandler = mergeHandler;
     }
 
-    public void HandleDrop(IGridItem draggedItem, Vector2Int startGridPos, Vector2Int dropGridPos)
+    public void HandleDrop(IGridItemView draggedView, Vector2Int startGridPos, Vector2Int dropGridPos)
     {
         if (!_gridState.IsValidPosition(dropGridPos))
         {
-            draggedItem.AnimateToPosition(startGridPos);
+            draggedView.AnimateToPosition(startGridPos);
             return;
         }
 
         if (dropGridPos == startGridPos)
         {
-            draggedItem.SnapToPosition(startGridPos);
+            draggedView.SnapToPosition(startGridPos);
             return;
         }
 
         if (_gridState.IsEmpty(dropGridPos))
         {
             _gridState.MoveItem(startGridPos, dropGridPos);
-            draggedItem.SnapToPosition(dropGridPos);
+            draggedView.SnapToPosition(dropGridPos);
             return;
         }
 
-        TryMergeOrReturn(draggedItem, startGridPos, dropGridPos);
+        TryMergeOrReturn(draggedView, startGridPos, dropGridPos);
     }
 
-    private void TryMergeOrReturn(IGridItem draggedItem, Vector2Int startGridPos, Vector2Int dropGridPos)
+    private void TryMergeOrReturn(IGridItemView draggedView, Vector2Int startGridPos, Vector2Int dropGridPos)
     {
-        var targetItem = _gridState.GetItemAt(dropGridPos);
+        var dragData = _gridState.GetDataAt(startGridPos);
+        var dropData = _gridState.GetDataAt(dropGridPos);
 
-        if (draggedItem.CanMerge(targetItem)
-            && _mergeHandler.TryMerge(draggedItem, targetItem, startGridPos, dropGridPos))
+        if (dragData.HasValue && dropData.HasValue
+            && dragData.Value.CanMerge(dropData.Value)
+            && _mergeHandler.TryMerge(startGridPos, dropGridPos))
         {
             return;
         }
 
-        draggedItem.AnimateToPosition(startGridPos);
+        draggedView.AnimateToPosition(startGridPos);
     }
 }
