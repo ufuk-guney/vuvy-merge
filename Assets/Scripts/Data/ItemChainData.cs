@@ -1,0 +1,9 @@
+using System.Collections.Generic;
+using UnityEngine;
+
+[CreateAssetMenu(fileName = "ItemChainData", menuName = "Game/Item Chain Data")]
+public class ItemChainData : ScriptableObject
+{
+    public ItemChainType ChainType;
+    public List<Sprite> Sprites;
+}
