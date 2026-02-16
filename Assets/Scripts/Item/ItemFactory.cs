@@ -39,7 +39,7 @@ public class ItemFactory : IInitializable, IDisposable
 
         var data = new GridItemData(chainType, level);
         var view = _itemPool.Get();
-        view.ApplyVisual(chainData.Sprites[level]);
+        view.Initialize(chainData.Sprites[level]);
         view.Transform.position = new Vector3(pos.x, pos.y, 0f);
 
         _gridState.PlaceItem(pos, data, view);
