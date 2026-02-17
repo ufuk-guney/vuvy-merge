@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cde275b06c464ed4aac5caff119fc5e9, type: 3}
+  m_Name: Diamond
+  m_EditorClassIdentifier: Assembly-CSharp::ItemChainData
+  ChainType: 3
+  Sprites:
+  - {fileID: 21300000, guid: 385bbc118c822df43b18d94112e33f01, type: 3}
+  - {fileID: 21300000, guid: 6d4e0224bd735bc4a88c73c9b1f8595c, type: 3}
+  - {fileID: 21300000, guid: 59a968f5e0c6a2c4caf181089f81fcd5, type: 3}
+  - {fileID: 21300000, guid: 1cf53bb3dd32ddf4b8adaaa52112af88, type: 3}
