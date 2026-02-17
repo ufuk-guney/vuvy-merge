@@ -10,6 +10,7 @@ public class GridInputController : IInitializable, IDisposable
 
     private readonly InputAction _pressAction;
     private readonly InputAction _positionAction;
+    private bool _isDragging;
 
     public GridInputController(DragHandler dragHandler)
     {
@@ -31,19 +32,25 @@ public class GridInputController : IInitializable, IDisposable
 
     private void OnPressStarted(InputAction.CallbackContext ctx)
     {
-        var gridPos = _positionAction.ReadValue<Vector2>().ScreenToGrid(_camera);
-        _dragHandler.TryStartDrag(gridPos);
+        _isDragging = false;
+        if (ctx.control.device is not Pointer pointer || !pointer.added) return;//added for device simulator
+        if (pointer.position.ReadValue().ScreenToGrid(_camera) is not { } gridPos) return;
+        _isDragging =_dragHandler.TryStartDrag(gridPos);
     }
 
     private void OnPointerMoved(InputAction.CallbackContext ctx)
     {
-        var worldPos = ctx.ReadValue<Vector2>().ScreenToWorld(_camera);
+        if(_isDragging)
+        if (ctx.control.device is not Pointer pointer || !pointer.added) return;
+        if (ctx.ReadValue<Vector2>().ScreenToWorld(_camera) is not { } worldPos) return;
         _dragHandler.UpdateDragPosition(worldPos);
     }
 
     private void OnPressCanceled(InputAction.CallbackContext ctx)
     {
-        var dropGridPos = _positionAction.ReadValue<Vector2>().ScreenToGrid(_camera);
+        _isDragging = false;
+        if (ctx.control.device is not Pointer pointer || !pointer.added) return;
+        if (pointer.position.ReadValue().ScreenToGrid(_camera) is not { } dropGridPos) return;
         _dragHandler.EndDrag(dropGridPos);
     }
 

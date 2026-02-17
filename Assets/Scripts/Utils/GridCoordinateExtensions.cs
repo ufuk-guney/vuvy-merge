@@ -7,15 +7,17 @@ public static class GridCoordinateExtensions
         return new Vector2Int(Mathf.RoundToInt(worldPos.x), Mathf.RoundToInt(worldPos.y));
     }
 
-    public static Vector3 ScreenToWorld(this Vector2 screenPos, Camera camera)
+    public static Vector3? ScreenToWorld(this Vector2 screenPos, Camera camera)
     {
+        if (!float.IsFinite(screenPos.x) || !float.IsFinite(screenPos.y)) return null;
         var worldPos = camera.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, camera.nearClipPlane));
         worldPos.z = 0f;
         return worldPos;
     }
 
-    public static Vector2Int ScreenToGrid(this Vector2 screenPos, Camera camera)
+    public static Vector2Int? ScreenToGrid(this Vector2 screenPos, Camera camera)
     {
-        return screenPos.ScreenToWorld(camera).WorldToGrid();
+        var worldPos = screenPos.ScreenToWorld(camera);
+        return worldPos?.WorldToGrid();
     }
 }
