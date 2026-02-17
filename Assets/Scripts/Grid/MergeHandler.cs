@@ -19,9 +19,11 @@ public class MergeHandler
         var dropData = _gridState.GetDataAt(dropPos);
         if (!dragData.HasValue || !dropData.HasValue) return false;
 
+        if (!dragData.Value.CanMerge(dropData.Value)) return false;
+
         if (!dragData.Value.CanMerge(dropData.Value, _database))
         {
-            Debug.Log($"Merge yapılamaz: {dragData.Value.ChainType}");
+            EventManager.Trigger<string>(EventType.OnWarning, "Max level!");
             return false;
         }
 

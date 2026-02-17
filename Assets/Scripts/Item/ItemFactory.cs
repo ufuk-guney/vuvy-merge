@@ -24,7 +24,10 @@ public class ItemFactory : IInitializable, IDisposable
     private void OnGenerate()
     {
         if (!_gridState.TryGetEmptyPosition(out var pos))
+        {
+            EventManager.Trigger<string>(EventType.OnWarning, "Grid is full!");
             return;
+        }
 
         var chainDataList = _database.ItemChainDataList;
         var chainData = chainDataList[UnityEngine.Random.Range(0, chainDataList.Count)];

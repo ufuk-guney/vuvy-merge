@@ -64,4 +64,5 @@ public enum EventType
     OnGenerateClick,
     OnReturnHomeClick,
     OnMerge,
+    OnWarning,
 }
