@@ -2,9 +2,9 @@ using UnityEngine;
 
 public static class GridCoordinateExtensions
 {
-    public static Vector2Int WorldToGrid(this Vector3 worldPos)
+    public static SlotPosition WorldToGrid(this Vector3 worldPos)
     {
-        return new Vector2Int(Mathf.RoundToInt(worldPos.x), Mathf.RoundToInt(worldPos.y));
+        return new SlotPosition(Mathf.RoundToInt(worldPos.x), Mathf.RoundToInt(worldPos.y));
     }
 
     public static Vector3? ScreenToWorld(this Vector2 screenPos, Camera camera)
@@ -15,7 +15,7 @@ public static class GridCoordinateExtensions
         return worldPos;
     }
 
-    public static Vector2Int? ScreenToGrid(this Vector2 screenPos, Camera camera)
+    public static SlotPosition? ScreenToGrid(this Vector2 screenPos, Camera camera)
     {
         var worldPos = screenPos.ScreenToWorld(camera);
         return worldPos?.WorldToGrid();

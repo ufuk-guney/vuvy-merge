@@ -4,7 +4,7 @@ using VContainer.Unity;
 
 public class ItemFactory : IInitializable, IDisposable
 {
-    private readonly ObjectPool<GridItem> _itemPool;
+    private readonly ObjectPool<ItemView> _itemPool;
     private readonly GridStateManager _gridState;
     private readonly BoardItemConfig _database;
 
@@ -12,7 +12,7 @@ public class ItemFactory : IInitializable, IDisposable
     {
         _database = database;
         _gridState = gridState;
-        _itemPool = new ObjectPool<GridItem>(database.ItemPrefab, scope.transform, 10);
+        _itemPool = new ObjectPool<ItemView>(database.ItemPrefab, scope.transform, 30);
     }
 
     public void Initialize()
@@ -35,23 +35,23 @@ public class ItemFactory : IInitializable, IDisposable
         SpawnItem(chainData.ChainType, 0, pos);
     }
 
-    public void SpawnItem(ItemChainType chainType, int level, Vector2Int pos)
+    public void SpawnItem(ItemChainType chainType, int level, SlotPosition pos)
     {
         var chainData = _database.ItemChainDataList.Find(c => c.ChainType == chainType);
         if (chainData == null) return;
 
-        var data = new GridItemData(chainType, level);
+        var data = new ItemData(chainType, level);
         var view = _itemPool.Get();
         view.Initialize(chainData.Sprites[level]);
-        view.Transform.position = new Vector3(pos.x, pos.y, 0f);
+        view.Transform.position = pos.ToWorldPosition();
 
         _gridState.PlaceItem(pos, data, view);
     }
 
-    public void ReturnView(IGridItemView view)
+    public void ReturnView(IItemView view)
     {
         view.ResetView();
-        if (view is GridItem gridItem)
+        if (view is ItemView gridItem)
             _itemPool.Return(gridItem);
     }
 

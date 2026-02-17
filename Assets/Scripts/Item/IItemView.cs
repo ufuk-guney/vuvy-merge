@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public interface IGridItemView
+public interface IItemView
 {
     Transform Transform { get; }
     SpriteRenderer SpriteRenderer { get; }

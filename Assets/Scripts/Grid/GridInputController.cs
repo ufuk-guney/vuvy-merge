@@ -33,9 +33,9 @@ public class GridInputController : IInitializable, IDisposable
     private void OnPressStarted(InputAction.CallbackContext ctx)
     {
         _isDragging = false;
-        if (ctx.control.device is not Pointer pointer || !pointer.added) return;//added for device simulator
+        if (ctx.control.device is not Pointer pointer || !pointer.added) return;//write for device simulator input
         if (pointer.position.ReadValue().ScreenToGrid(_camera) is not { } gridPos) return;
-        _isDragging =_dragHandler.TryStartDrag(gridPos);
+        _isDragging = _dragHandler.TryStartDrag(gridPos);
     }
 
     private void OnPointerMoved(InputAction.CallbackContext ctx)

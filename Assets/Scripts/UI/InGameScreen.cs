@@ -44,18 +44,19 @@ public class InGameScreen : MonoBehaviour, IScreen
     private void OnReturnHomeClick()
     {
         EventManager.Trigger(EventType.OnReturnHomeClick);
+        _scoreText.text = "" ;
     }
 
     private void OnMerge(int score)
     {
         _totalScore += score;
-        _scoreText.text = "Score : " +_totalScore.ToString();
+        _scoreText.text = _totalScore.ToString();
     }
 
     private void ResetScore()
     {
         _totalScore = 0;
-        _scoreText.text = "Score : " +  "0";
+        _scoreText.text = "";
     }
 
     private void ShowWarning(string message)
@@ -69,7 +70,6 @@ public class InGameScreen : MonoBehaviour, IScreen
         var seq = DOTween.Sequence();
         seq.SetTarget(_warningText.transform);
         seq.Append(_warningText.DOFade(1f, 0.25f));
-        // seq.AppendInterval(0.5f);
         seq.Append(_warningText.DOFade(0f, 0.5f));
         seq.Join(_warningText.rectTransform.DOAnchorPosY(_warningOriginalPos.y + 50f, 0.5f));
     }

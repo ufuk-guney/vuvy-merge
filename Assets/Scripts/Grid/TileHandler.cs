@@ -23,24 +23,23 @@ public class TileHandler
         {
             for (int x = 0; x < _width; x++)
             {
-                var position = new Vector3(x, y, 0f);
-                var tileView = Object.Instantiate(tilePrefab, position, Quaternion.identity, parent);
+                var pos = new SlotPosition(x, y);
+                var tileView = Object.Instantiate(tilePrefab, pos.ToWorldPosition(), Quaternion.identity, parent);
                 _tileViews[x, y] = tileView;
             }
         }
     }
 
-    public void HighlightMergeableTiles(GridItemData draggedData, GridStateManager gridState, Vector2Int excludePos)
+    public void HighlightMergeableTiles(ItemData draggedData, GridStateManager gridState, SlotPosition excludePos)
     {
         for (int x = 0; x < _width; x++)
         {
             for (int y = 0; y < _height; y++)
             {
-                if (x == excludePos.x && y == excludePos.y) continue;
+                if (x == excludePos.X && y == excludePos.Y) continue;
 
-                var pos = new Vector2Int(x, y);
-                var data = gridState.GetDataAt(pos);
-                if (data.HasValue && draggedData.CanMerge(data.Value, _database))
+                var slot = gridState.GetSlotAt(new SlotPosition(x, y));
+                if (slot.Data.HasValue && draggedData.CanMerge(slot.Data.Value, _database))
                 {
                     _tileViews[x, y].SetHighlight(Color.greenYellow);
                 }

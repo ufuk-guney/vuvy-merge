@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class GridItem : MonoBehaviour, IGridItemView
+public class ItemView : MonoBehaviour, IItemView
 {
     [SerializeField] private SpriteRenderer _spriteRenderer;
 

@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class DropHandler
 {
     private readonly GridStateManager _gridState;
@@ -11,42 +9,43 @@ public class DropHandler
         _mergeHandler = mergeHandler;
     }
 
-    public void HandleDrop(IGridItemView draggedView, Vector2Int startGridPos, Vector2Int dropGridPos)
+    public void HandleDrop(IItemView draggedView, SlotPosition startPos, SlotPosition dropPos)
     {
-        if (!_gridState.IsValidPosition(dropGridPos))
+        if (!_gridState.IsValidPosition(dropPos))
         {
-            draggedView.AnimateToPosition(startGridPos);
+            draggedView.AnimateToPosition(startPos);
             return;
         }
 
-        if (dropGridPos == startGridPos)
+        if (dropPos == startPos)
         {
-            draggedView.SnapToPosition(startGridPos);
+            draggedView.SnapToPosition(startPos);
             return;
         }
 
-        if (_gridState.IsEmpty(dropGridPos))
+        var dropSlot = _gridState.GetSlotAt(dropPos);
+        if (dropSlot.IsEmpty)
         {
-            _gridState.MoveItem(startGridPos, dropGridPos);
-            draggedView.SnapToPosition(dropGridPos);
+            _gridState.MoveItem(startPos, dropPos);
+            draggedView.SnapToPosition(dropPos);
             return;
         }
 
-        TryMergeOrReturn(draggedView, startGridPos, dropGridPos);
+        TryMergeOrReturn(draggedView, startPos, dropPos);
     }
 
-    private void TryMergeOrReturn(IGridItemView draggedView, Vector2Int startGridPos, Vector2Int dropGridPos)
+    private void TryMergeOrReturn(IItemView draggedView, SlotPosition startPos, SlotPosition dropPos)
     {
-        var dragData = _gridState.GetDataAt(startGridPos);
-        var dropData = _gridState.GetDataAt(dropGridPos);
+        var dragSlot = _gridState.GetSlotAt(startPos);
+        var dropSlot = _gridState.GetSlotAt(dropPos);
 
-        if (dragData.HasValue && dropData.HasValue
-            && dragData.Value.CanMerge(dropData.Value)
-            && _mergeHandler.TryMerge(startGridPos, dropGridPos))
+        if (dragSlot.Data.HasValue && dropSlot.Data.HasValue
+            && dragSlot.Data.Value.CanMerge(dropSlot.Data.Value)
+            && _mergeHandler.TryMerge(startPos, dropPos))
         {
             return;
         }
 
-        draggedView.AnimateToPosition(startGridPos);
+        draggedView.AnimateToPosition(startPos);
     }
 }

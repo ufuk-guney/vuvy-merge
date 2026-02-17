@@ -1,9 +1,9 @@
-public struct GridItemData
+public struct ItemData
 {
     public ItemChainType ChainType;
     public int Level;
 
-    public GridItemData(ItemChainType chainType, int level)
+    public ItemData(ItemChainType chainType, int level)
     {
         ChainType = chainType;
         Level = level;

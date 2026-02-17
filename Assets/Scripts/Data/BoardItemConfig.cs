@@ -5,6 +5,6 @@ using UnityEngine;
 public class BoardItemConfig : ScriptableObject
 {
     public TileView TilePrefab;
-    public GridItem ItemPrefab;
+    public ItemView ItemPrefab;
     public List<ItemChainData> ItemChainDataList;
 }
