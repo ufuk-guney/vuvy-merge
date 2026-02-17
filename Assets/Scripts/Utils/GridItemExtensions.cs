@@ -7,12 +7,23 @@ public static class GridItemExtensions
 
     public static void AnimateToPosition(this IItemView view, SlotPosition pos)
     {
-        view.Transform.DOMove(pos.ToWorldPosition(), TweenDuration).SetEase(Ease.OutBack);
+        view.Transform.DOScale(0.85f, TweenDuration / 1.25f).SetEase(Ease.OutBack);
+        view.Transform.DOMove(pos.ToWorldPosition(), TweenDuration)
+            .SetEase(Ease.OutBack)
+            .OnComplete(() => view.Transform.DOScale(1f, TweenDuration ).SetEase(Ease.InSine));
     }
 
     public static void SnapToPosition(this IItemView view, SlotPosition pos)
     {
         view.Transform.position = pos.ToWorldPosition();
+        view.PlayPopScale();
+    }
+
+    private static void PlayPopScale(this IItemView view)
+    {
+        view.Transform.DOScale(0.9f, TweenDuration / 1.25f)
+            .SetEase(Ease.OutBack)
+            .OnComplete(() => view.Transform.DOScale(1f, TweenDuration ).SetEase(Ease.InSine));
     }
 
     public static bool CanMerge(this ItemData a, ItemData b)

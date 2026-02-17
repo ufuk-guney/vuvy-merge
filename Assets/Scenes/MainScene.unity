@@ -755,6 +755,8 @@ RectTransform:
   m_Children:
   - {fileID: 208045686}
   - {fileID: 941774969}
+  - {fileID: 1334298721}
+  - {fileID: 1658828497}
   - {fileID: 358442862}
   - {fileID: 1952857627}
   m_Father: {fileID: 608702400}
@@ -1185,15 +1187,13 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1334298721}
-  - {fileID: 1658828497}
+  m_Children: []
   m_Father: {fileID: 480600175}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -295.9996}
-  m_SizeDelta: {x: 538.9845, y: 419.4513}
+  m_AnchoredPosition: {x: 0, y: -376.932}
+  m_SizeDelta: {x: 317.8242, y: 210.9278}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &941774970
 MonoBehaviour:
@@ -1315,11 +1315,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 941774969}
+  m_Father: {fileID: 480600175}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0.20388016, y: -113.72606}
+  m_AnchoredPosition: {x: 0, y: -196}
   m_SizeDelta: {x: 446.5306, y: 268.1425}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1334298722
@@ -1526,12 +1526,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 941774969}
+  m_Father: {fileID: 480600175}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -4.0496197, y: -254.87486}
-  m_SizeDelta: {x: 330.6066, y: 159.0077}
+  m_AnchoredPosition: {x: 0, y: -360.1811}
+  m_SizeDelta: {x: 218.8678, y: 135.6776}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1658828498
 MonoBehaviour:
@@ -1553,7 +1553,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: 10
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 605433b68313d491a8ab88bc03a41651, type: 2}
   m_sharedMaterial: {fileID: 2830636965969884548, guid: 605433b68313d491a8ab88bc03a41651, type: 2}
@@ -1580,8 +1580,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 85.4
-  m_fontSizeBase: 85.4
+  m_fontSize: 73.4
+  m_fontSizeBase: 73.4
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
