@@ -1,4 +1,3 @@
-using System.Linq;
 using UnityEngine;
 
 public class MergeHandler
@@ -17,17 +16,16 @@ public class MergeHandler
     public bool TryMerge(Vector2Int dragPos, Vector2Int dropPos)
     {
         var dragData = _gridState.GetDataAt(dragPos);
-        if (!dragData.HasValue) return false;
+        var dropData = _gridState.GetDataAt(dropPos);
+        if (!dragData.HasValue || !dropData.HasValue) return false;
 
-        var chainData = _database.ItemChainDataList.FirstOrDefault(c => c.ChainType == dragData.Value.ChainType);
-        if (chainData == null) return false;
-
-        int nextLevel = dragData.Value.Level + 1;
-        if (nextLevel >= chainData.Sprites.Count)
+        if (!dragData.Value.CanMerge(dropData.Value, _database))
         {
-            Debug.Log($"Max seviye! {chainData.ChainType} için merge yapılamaz.");
+            Debug.Log($"Merge yapılamaz: {dragData.Value.ChainType}");
             return false;
         }
+
+        int nextLevel = dragData.Value.Level + 1;
 
         var dragView = _gridState.GetViewAt(dragPos);
         var dropView = _gridState.GetViewAt(dropPos);
@@ -38,7 +36,7 @@ public class MergeHandler
         _itemFactory.ReturnView(dragView);
         _itemFactory.ReturnView(dropView);
 
-        _itemFactory.SpawnItem(chainData.ChainType, nextLevel, dropPos);
+        _itemFactory.SpawnItem(dragData.Value.ChainType, nextLevel, dropPos);
 
         int score = (nextLevel) * 10;
         EventManager.Trigger(EventType.OnMerge, score);

@@ -9,16 +9,18 @@ public class DragHandler
 
     private readonly GridStateManager _gridState;
     private readonly DropHandler _dropHandler;
+    private readonly TileHandler _tileHandler;
 
     private IGridItemView _draggedView;
     private Vector2Int _startGridPos;
     private bool _isDragging;
     private int _originalSortingOrder;
 
-    public DragHandler(GridStateManager gridState, DropHandler dropHandler)
+    public DragHandler(GridStateManager gridState, DropHandler dropHandler, TileHandler tileHandler)
     {
         _gridState = gridState;
         _dropHandler = dropHandler;
+        _tileHandler = tileHandler;
     }
 
     public bool TryStartDrag(Vector2Int gridPos)
@@ -34,6 +36,12 @@ public class DragHandler
         _originalSortingOrder = _draggedView.SpriteRenderer.sortingOrder;
         _draggedView.SpriteRenderer.sortingOrder = DragSortingOrder;
 
+        var draggedData = _gridState.GetDataAt(gridPos);
+        if (draggedData.HasValue)
+        {
+            _tileHandler.HighlightMergeableTiles(draggedData.Value, _gridState, gridPos);
+        }
+
         return true;
     }
 
@@ -47,6 +55,8 @@ public class DragHandler
     {
         if (!_isDragging || _draggedView == null) return;
         _isDragging = false;
+
+        _tileHandler.ResetAllHighlights();
 
         _draggedView.Transform.DOScale(1f, DragScaleDuration).SetEase(Ease.OutBack);
         _draggedView.SpriteRenderer.sortingOrder = _originalSortingOrder;
