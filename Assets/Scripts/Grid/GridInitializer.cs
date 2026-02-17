@@ -18,7 +18,7 @@ public class GridInitializer : IInitializable
 
     public void Initialize()
     {
-        var gridData = new GridData(5, 5);
+        var gridData = new GridData(Constants.Grid.Width, Constants.Grid.Height);
         _tileGenerator.GenerateTiles(gridData, _scope.transform);
         _gridStateManager.Initialize(gridData);
     }

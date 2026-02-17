@@ -3,10 +3,6 @@ using UnityEngine;
 
 public class DragHandler
 {
-    private const float DragScale = 1.1f;
-    private const float DragScaleDuration = 0.2f;
-    private const int DragSortingOrder = 10;
-
     private readonly GridStateManager _gridState;
     private readonly DropHandler _dropHandler;
     private readonly TileHandler _tileHandler;
@@ -34,9 +30,9 @@ public class DragHandler
         _startPos = pos;
         _isDragging = true;
 
-        _draggedView.Transform.DOScale(DragScale, DragScaleDuration).SetEase(Ease.OutBack);
+        _draggedView.Transform.DOScale(Constants.Animation.DragScale, Constants.Animation.TweenDuration).SetEase(Ease.OutBack);
         _originalSortingOrder = _draggedView.SpriteRenderer.sortingOrder;
-        _draggedView.SpriteRenderer.sortingOrder = DragSortingOrder;
+        _draggedView.SpriteRenderer.sortingOrder = Constants.Animation.DragSortingOrder;
 
         if (slot.Data.HasValue)
         {
@@ -59,7 +55,7 @@ public class DragHandler
 
         _tileHandler.ResetAllHighlights();
 
-        _draggedView.Transform.DOScale(1f, DragScaleDuration).SetEase(Ease.OutBack);
+        _draggedView.Transform.DOScale(1f, Constants.Animation.TweenDuration).SetEase(Ease.OutBack);
         _draggedView.SpriteRenderer.sortingOrder = _originalSortingOrder;
 
         _dropHandler.HandleDrop(_draggedView, _startPos, dropPos);

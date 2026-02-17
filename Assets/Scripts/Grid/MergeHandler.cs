@@ -38,7 +38,7 @@ public class MergeHandler
 
         _itemFactory.SpawnItem(dragData.ChainType, nextLevel, dropPos);
 
-        int score = (nextLevel) * 10;
+        int score = nextLevel * Constants.Scoring.ScorePerLevel;
         EventManager.Trigger(EventType.OnMerge, score);
 
         return true;

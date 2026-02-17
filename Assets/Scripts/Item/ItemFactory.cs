@@ -12,7 +12,7 @@ public class ItemFactory : IInitializable, IDisposable
     {
         _database = database;
         _gridState = gridState;
-        _itemPool = new ObjectPool<ItemView>(database.ItemPrefab, scope.transform, 30);
+        _itemPool = new ObjectPool<ItemView>(database.ItemPrefab, scope.transform, Constants.Pool.ItemPoolInitialSize);
     }
 
     public void Initialize()
@@ -32,7 +32,7 @@ public class ItemFactory : IInitializable, IDisposable
         var chainDataList = _database.ItemChainDataList;
         var chainData = chainDataList[UnityEngine.Random.Range(0, chainDataList.Count)];
 
-        SpawnItem(chainData.ChainType, 0, pos);
+        SpawnItem(chainData.ChainType, Constants.Item.StartingLevel, pos);
     }
 
     public void SpawnItem(ItemChainType chainType, int level, SlotPosition pos)

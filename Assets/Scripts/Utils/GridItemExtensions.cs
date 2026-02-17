@@ -3,14 +3,12 @@ using DG.Tweening;
 
 public static class GridItemExtensions
 {
-    private const float TweenDuration = 0.2f;
-
     public static void AnimateToPosition(this IItemView view, SlotPosition pos)
     {
-        view.Transform.DOScale(0.85f, TweenDuration / 1.25f).SetEase(Ease.OutBack);
-        view.Transform.DOMove(pos.ToWorldPosition(), TweenDuration)
+        view.Transform.DOScale(Constants.Animation.SquishScale, Constants.Animation.SquishDuration).SetEase(Ease.OutBack);
+        view.Transform.DOMove(pos.ToWorldPosition(), Constants.Animation.TweenDuration)
             .SetEase(Ease.OutBack)
-            .OnComplete(() => view.Transform.DOScale(1f, TweenDuration ).SetEase(Ease.InSine));
+            .OnComplete(() => view.Transform.DOScale(1f, Constants.Animation.TweenDuration).SetEase(Ease.InSine));
     }
 
     public static void SnapToPosition(this IItemView view, SlotPosition pos)
@@ -21,9 +19,9 @@ public static class GridItemExtensions
 
     private static void PlayPopScale(this IItemView view)
     {
-        view.Transform.DOScale(0.9f, TweenDuration / 1.25f)
+        view.Transform.DOScale(Constants.Animation.SquishScale, Constants.Animation.SquishDuration)
             .SetEase(Ease.OutBack)
-            .OnComplete(() => view.Transform.DOScale(1f, TweenDuration ).SetEase(Ease.InSine));
+            .OnComplete(() => view.Transform.DOScale(1f, Constants.Animation.TweenDuration).SetEase(Ease.InSine));
     }
 
     public static bool CanMerge(this ItemData a, ItemData b)

@@ -12,7 +12,7 @@ public class ItemView : MonoBehaviour, IItemView
     {
         _spriteRenderer.sprite = sprite;
         transform.localScale = Vector3.zero;
-        transform.DOScale(Vector3.one, 0.3f).SetEase(Ease.OutBack);
+        transform.DOScale(Vector3.one, Constants.Animation.SpawnScaleDuration).SetEase(Ease.OutBack);
     }
 
     public void ResetView()

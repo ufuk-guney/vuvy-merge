@@ -69,9 +69,9 @@ public class InGameScreen : MonoBehaviour, IScreen
 
         var seq = DOTween.Sequence();
         seq.SetTarget(_warningText.transform);
-        seq.Append(_warningText.DOFade(1f, 0.25f));
-        seq.Append(_warningText.DOFade(0f, 0.5f));
-        seq.Join(_warningText.rectTransform.DOAnchorPosY(_warningOriginalPos.y + 50f, 0.5f));
+        seq.Append(_warningText.DOFade(1f, Constants.Animation.WarningFadeInDuration));
+        seq.Append(_warningText.DOFade(0f, Constants.Animation.WarningFadeOutDuration));
+        seq.Join(_warningText.rectTransform.DOAnchorPosY(_warningOriginalPos.y + Constants.Animation.WarningFloatDistance, Constants.Animation.WarningFadeOutDuration));
     }
 
     public void Dispose()
