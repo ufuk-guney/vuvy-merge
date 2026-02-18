@@ -13,40 +13,44 @@ namespace VuvyMerge.UI
         [SerializeField] private TextMeshProUGUI _warningText;
 
         private int _totalScore;
-        private Vector2 _warningOriginalPos;
+        private RectTransform _warningRect;
+        private Vector2 _warningOriginPos;
 
         public ScreenType ScreenType => ScreenType.InGame;
 
         public void Initialize()
         {
+            _warningRect = _warningText.rectTransform;
+            _warningOriginPos = _warningRect.anchoredPosition;
+            _warningText.alpha = 0f;
+
             _generateButton.onClick.AddListener(OnGenerateClick);
             _returnHomeButton.onClick.AddListener(OnReturnHomeClick);
             EventBus.Subscribe<int>(EventType.OnMerge, OnMerge);
             EventBus.Subscribe<string>(EventType.OnWarning, ShowWarning);
-            _warningOriginalPos = _warningText.rectTransform.anchoredPosition;
-            _warningText.alpha = 0f;
+
             ResetScore();
         }
 
-        public void Show()
+        public void Show() => gameObject.SetActive(true);
+
+        public void Hide() => gameObject.SetActive(false);
+
+        public void Dispose()
         {
-            gameObject.SetActive(true);
+            DOTween.Kill(_warningRect);
+            _generateButton.onClick.RemoveListener(OnGenerateClick);
+            _returnHomeButton.onClick.RemoveListener(OnReturnHomeClick);
+            EventBus.Unsubscribe<int>(EventType.OnMerge, OnMerge);
+            EventBus.Unsubscribe<string>(EventType.OnWarning, ShowWarning);
         }
 
-        public void Hide()
-        {
-            gameObject.SetActive(false);
-        }
-
-        private void OnGenerateClick()
-        {
-            EventBus.Trigger(EventType.OnGenerateClick);
-        }
+        private void OnGenerateClick() => EventBus.Trigger(EventType.OnGenerateClick);
 
         private void OnReturnHomeClick()
         {
             EventBus.Trigger(EventType.OnReturnHomeClick);
-            _scoreText.text = Constants.Text.EmptyScore;
+            ResetScore();
         }
 
         private void OnMerge(int score)
@@ -63,26 +67,19 @@ namespace VuvyMerge.UI
 
         private void ShowWarning(string message)
         {
-            DOTween.Kill(_warningText.transform);
+            DOTween.Kill(_warningRect);
 
             _warningText.text = message;
             _warningText.alpha = 0f;
-            _warningText.rectTransform.anchoredPosition = _warningOriginalPos;
+            _warningRect.anchoredPosition = _warningOriginPos;
 
-            var seq = DOTween.Sequence();
-            seq.SetTarget(_warningText.transform);
-            seq.Append(_warningText.DOFade(1f, Constants.Animation.WarningFadeInDuration));
-            seq.Append(_warningText.DOFade(0f, Constants.Animation.WarningFadeOutDuration));
-            seq.Join(_warningText.rectTransform.DOAnchorPosY(_warningOriginalPos.y + Constants.Animation.WarningFloatDistance, Constants.Animation.WarningFadeOutDuration));
-        }
+            var targetY = _warningOriginPos.y + Constants.Animation.WarningFloatDistance;
 
-        public void Dispose()
-        {
-            DOTween.Kill(_warningText.transform);
-            _generateButton.onClick.RemoveListener(OnGenerateClick);
-            _returnHomeButton.onClick.RemoveListener(OnReturnHomeClick);
-            EventBus.Unsubscribe<int>(EventType.OnMerge, OnMerge);
-            EventBus.Unsubscribe<string>(EventType.OnWarning, ShowWarning);
+            DOTween.Sequence()
+                .SetTarget(_warningRect)
+                .Append(_warningText.DOFade(1f, Constants.Animation.WarningFadeInDuration))
+                .Append(_warningText.DOFade(0f, Constants.Animation.WarningFadeOutDuration))
+                .Join(_warningRect.DOAnchorPosY(targetY, Constants.Animation.WarningFadeOutDuration));
         }
     }
 }

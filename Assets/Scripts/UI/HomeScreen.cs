@@ -14,20 +14,11 @@ namespace VuvyMerge.UI
             _levelStartButton.onClick.AddListener(StartLevel);
         }
 
-        public void Show()
-        {
-            gameObject.SetActive(true);
-        }
+        public void Show() => gameObject.SetActive(true);
 
-        public void Hide()
-        {
-            gameObject.SetActive(false);
-        }
+        public void Hide() => gameObject.SetActive(false);
 
-        private void StartLevel()
-        {
-            EventBus.Trigger(EventType.OnLevelStartClick);
-        }
+        private void StartLevel() => EventBus.Trigger(EventType.OnLevelStartClick);
 
         public void Dispose()
         {

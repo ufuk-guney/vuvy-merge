@@ -39,15 +39,9 @@ namespace VuvyMerge.UI
             }
         }
 
-        private void OnLevelStartClick()
-        {
-            ShowScreen(ScreenType.InGame);
-        }
+        private void OnLevelStartClick() => ShowScreen(ScreenType.InGame);
 
-        private void OnReturnHomeClick()
-        {
-            ShowScreen(ScreenType.Home);
-        }
+        private void OnReturnHomeClick() => ShowScreen(ScreenType.Home);
 
         public void Dispose()
         {
