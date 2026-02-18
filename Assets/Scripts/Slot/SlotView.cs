@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SlotView : MonoBehaviour, IHighlightable
+public class SlotView : MonoBehaviour, ISlotView
 {
     [SerializeField] private SpriteRenderer _spriteRenderer;
     private Color _originalColor;

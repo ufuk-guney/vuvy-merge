@@ -6,7 +6,11 @@ public class ItemView : MonoBehaviour, IItemView
     [SerializeField] private SpriteRenderer _spriteRenderer;
 
     public Transform Transform => transform;
-    public SpriteRenderer SpriteRenderer => _spriteRenderer;
+    public int SortingOrder
+    {
+        get => _spriteRenderer.sortingOrder;
+        set => _spriteRenderer.sortingOrder = value;
+    }
 
     public void Initialize(Sprite sprite)
     {

@@ -31,8 +31,8 @@ public class DragHandler
         _isDragging = true;
 
         _draggedView.Transform.DOScale(Constants.Animation.DragScale, Constants.Animation.TweenDuration).SetEase(Ease.OutBack);
-        _originalSortingOrder = _draggedView.SpriteRenderer.sortingOrder;
-        _draggedView.SpriteRenderer.sortingOrder = Constants.Animation.DragSortingOrder;
+        _originalSortingOrder = _draggedView.SortingOrder;
+        _draggedView.SortingOrder = Constants.Animation.DragSortingOrder;
 
         if (slot.Data.HasValue)
             _gridHighlighter.HighlightMergeablePositions(slot.Data.Value, pos);
@@ -54,7 +54,7 @@ public class DragHandler
         _gridHighlighter.ResetHighlights();
 
         _draggedView.Transform.DOScale(1f, Constants.Animation.TweenDuration).SetEase(Ease.OutBack);
-        _draggedView.SpriteRenderer.sortingOrder = _originalSortingOrder;
+        _draggedView.SortingOrder = _originalSortingOrder;
 
         _dropHandler.HandleDrop(_draggedView, _startPos, dropPos);
         _draggedView = null;

@@ -4,9 +4,8 @@ using UnityEngine;
 public class GridView
 {
     private readonly BoardItemConfig _database;
-    private SlotView[,] _slotViews;
-    private int _width;
-    private int _height;
+    private ISlotView[,] _slotViews;
+    private GridSize _gridSize;
 
     public GridView(BoardItemConfig database)
     {
@@ -15,14 +14,13 @@ public class GridView
 
     public void GenerateSlots(GridSize gridSize, Transform parent)
     {
-        _width = gridSize.Width;
-        _height = gridSize.Height;
-        _slotViews = new SlotView[_width, _height];
+        _gridSize = gridSize;
+        _slotViews = new ISlotView[_gridSize.Width, _gridSize.Height];
 
         var slotPrefab = _database.TilePrefab;
-        for (int y = 0; y < _height; y++)
+        for (int y = 0; y < _gridSize.Height; y++)
         {
-            for (int x = 0; x < _width; x++)
+            for (int x = 0; x < _gridSize.Width; x++)
             {
                 var pos = new SlotPosition(x, y);
                 var slotView = Object.Instantiate(slotPrefab, pos.ToWorldPosition(), Quaternion.identity, parent);
@@ -61,8 +59,8 @@ public class GridView
 
     public void ResetAllHighlights()
     {
-        for (int x = 0; x < _width; x++)
-            for (int y = 0; y < _height; y++)
+        for (int x = 0; x < _gridSize.Width; x++)
+            for (int y = 0; y < _gridSize.Height; y++)
                 _slotViews[x, y].ResetHighlight();
     }
 }
