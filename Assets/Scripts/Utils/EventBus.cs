@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-public static class EventManager
+public static class EventBus
 {
     private static readonly Dictionary<EventType, Delegate> _eventTable = new Dictionary<EventType, Delegate>();
 

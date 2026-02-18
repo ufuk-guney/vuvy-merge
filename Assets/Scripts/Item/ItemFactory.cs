@@ -17,14 +17,14 @@ public class ItemFactory : IInitializable, IItemSpawner, IDisposable
     public void Initialize()
     {
         _itemPool.Prewarm();
-        EventManager.Subscribe(EventType.OnGenerateClick, OnGenerate);
+        EventBus.Subscribe(EventType.OnGenerateClick, OnGenerate);
     }
 
     private void OnGenerate()
     {
         if (!_gridWriter.TryGetEmptyPosition(out var pos))
         {
-            EventManager.Trigger<string>(EventType.OnWarning, "Grid is full!");
+            EventBus.Trigger<string>(EventType.OnWarning, "Grid is full!");
             return;
         }
 
@@ -56,6 +56,6 @@ public class ItemFactory : IInitializable, IItemSpawner, IDisposable
 
     public void Dispose()
     {
-        EventManager.Unsubscribe(EventType.OnGenerateClick, OnGenerate);
+        EventBus.Unsubscribe(EventType.OnGenerateClick, OnGenerate);
     }
 }

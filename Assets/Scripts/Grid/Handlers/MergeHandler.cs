@@ -29,7 +29,7 @@ public class MergeHandler
 
         if (!dragData.CanMerge(dropData, chainData.MaxLevel))
         {
-            EventManager.Trigger<string>(EventType.OnWarning, "Max level!");
+            EventBus.Trigger<string>(EventType.OnWarning, "Max level!");
             return false;
         }
 
@@ -47,7 +47,7 @@ public class MergeHandler
         _itemSpawner.SpawnItem(dragData.ChainType, nextLevel, dropPos);
 
         int score = nextLevel * Constants.Scoring.ScorePerLevel;
-        EventManager.Trigger(EventType.OnMerge, score);
+        EventBus.Trigger(EventType.OnMerge, score);
 
         return true;
     }

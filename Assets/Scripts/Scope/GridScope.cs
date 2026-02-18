@@ -14,8 +14,8 @@ public class GridScope : IInitializable, IDisposable
 
     public void Initialize()
     {
-        EventManager.Subscribe(EventType.OnLevelStartClick, OnLevelStart);
-        EventManager.Subscribe(EventType.OnReturnHomeClick, OnReturnHome);
+        EventBus.Subscribe(EventType.OnLevelStartClick, OnLevelStart);
+        EventBus.Subscribe(EventType.OnReturnHomeClick, OnReturnHome);
     }
     private void OnLevelStart()
     {
@@ -45,8 +45,8 @@ public class GridScope : IInitializable, IDisposable
 
     public void Dispose()
     {
-        EventManager.Unsubscribe(EventType.OnLevelStartClick, OnLevelStart);
-        EventManager.Unsubscribe(EventType.OnReturnHomeClick, OnReturnHome);
+        EventBus.Unsubscribe(EventType.OnLevelStartClick, OnLevelStart);
+        EventBus.Unsubscribe(EventType.OnReturnHomeClick, OnReturnHome);
         _childScope?.Dispose();
     }
 }

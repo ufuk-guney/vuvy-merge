@@ -24,7 +24,7 @@ public class HomeScreen : MonoBehaviour, IScreen
 
     private void StartLevel()
     {
-        EventManager.Trigger(EventType.OnLevelStartClick);
+        EventBus.Trigger(EventType.OnLevelStartClick);
     }
 
     public void Dispose()

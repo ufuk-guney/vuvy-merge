@@ -19,8 +19,8 @@ public class InGameScreen : MonoBehaviour, IScreen
     {
         _generateButton.onClick.AddListener(OnGenerateClick);
         _returnHomeButton.onClick.AddListener(OnReturnHomeClick);
-        EventManager.Subscribe<int>(EventType.OnMerge, OnMerge);
-        EventManager.Subscribe<string>(EventType.OnWarning, ShowWarning);
+        EventBus.Subscribe<int>(EventType.OnMerge, OnMerge);
+        EventBus.Subscribe<string>(EventType.OnWarning, ShowWarning);
         _warningOriginalPos = _warningText.rectTransform.anchoredPosition;
         _warningText.alpha = 0f;
         ResetScore();
@@ -38,12 +38,12 @@ public class InGameScreen : MonoBehaviour, IScreen
 
     private void OnGenerateClick()
     {
-        EventManager.Trigger(EventType.OnGenerateClick);
+        EventBus.Trigger(EventType.OnGenerateClick);
     }
 
     private void OnReturnHomeClick()
     {
-        EventManager.Trigger(EventType.OnReturnHomeClick);
+        EventBus.Trigger(EventType.OnReturnHomeClick);
         _scoreText.text = "" ;
     }
 
@@ -79,7 +79,7 @@ public class InGameScreen : MonoBehaviour, IScreen
         DOTween.Kill(_warningText.transform);
         _generateButton.onClick.RemoveListener(OnGenerateClick);
         _returnHomeButton.onClick.RemoveListener(OnReturnHomeClick);
-        EventManager.Unsubscribe<int>(EventType.OnMerge, OnMerge);
-        EventManager.Unsubscribe<string>(EventType.OnWarning, ShowWarning);
+        EventBus.Unsubscribe<int>(EventType.OnMerge, OnMerge);
+        EventBus.Unsubscribe<string>(EventType.OnWarning, ShowWarning);
     }
 }

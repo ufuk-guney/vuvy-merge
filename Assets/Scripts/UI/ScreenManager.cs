@@ -21,8 +21,8 @@ public class ScreenManager : IInitializable, IDisposable
             screen.Hide();
         }
 
-        EventManager.Subscribe(EventType.OnLevelStartClick, OnLevelStartClick);
-        EventManager.Subscribe(EventType.OnReturnHomeClick, OnReturnHomeClick);
+        EventBus.Subscribe(EventType.OnLevelStartClick, OnLevelStartClick);
+        EventBus.Subscribe(EventType.OnReturnHomeClick, OnReturnHomeClick);
 
         ShowScreen(ScreenType.Home);
     }
@@ -49,8 +49,8 @@ public class ScreenManager : IInitializable, IDisposable
 
     public void Dispose()
     {
-        EventManager.Unsubscribe(EventType.OnLevelStartClick, OnLevelStartClick);
-        EventManager.Unsubscribe(EventType.OnReturnHomeClick, OnReturnHomeClick);
+        EventBus.Unsubscribe(EventType.OnLevelStartClick, OnLevelStartClick);
+        EventBus.Unsubscribe(EventType.OnReturnHomeClick, OnReturnHomeClick);
 
         foreach (var screen in _screens.Values)
             screen.Dispose();
