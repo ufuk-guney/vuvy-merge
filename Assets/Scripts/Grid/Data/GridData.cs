@@ -6,18 +6,16 @@ public class GridData
     private SlotData[,] _slots;
     private readonly List<SlotPosition> _emptyPositions = new();//this is for o(n)
     private readonly List<SlotPosition> _mergeablePositions = new();
-    private int _width;
-    private int _height;
+    private GridSize _size;
 
     public void Initialize(GridSize gridSize)
     {
-        _width = gridSize.Width;
-        _height = gridSize.Height;
-        _slots = new SlotData[_width, _height];
+        _size = gridSize;
+        _slots = new SlotData[_size.Width, _size.Height];
 
         _emptyPositions.Clear();
-        for (int x = 0; x < _width; x++)
-            for (int y = 0; y < _height; y++)
+        for (int x = 0; x < _size.Width; x++)
+            for (int y = 0; y < _size.Height; y++)
             {
                 var pos = new SlotPosition(x, y);
                 _slots[x, y] = new SlotData(pos);
@@ -32,7 +30,7 @@ public class GridData
 
     public bool IsValidPosition(SlotPosition pos)
     {
-        return pos.X >= 0 && pos.X < _width && pos.Y >= 0 && pos.Y < _height;
+        return pos.X >= 0 && pos.X < _size.Width && pos.Y >= 0 && pos.Y < _size.Height;
     }
 
     public bool TryGetEmptyPosition(out SlotPosition position)
@@ -81,8 +79,8 @@ public class GridData
         var chainData = config.ItemChainDataList.Find(c => c.ChainType == draggedData.ChainType);
         if (chainData == null) return _mergeablePositions;
 
-        for (int x = 0; x < _width; x++)
-            for (int y = 0; y < _height; y++)
+        for (int x = 0; x < _size.Width; x++)
+            for (int y = 0; y < _size.Height; y++)
             {
                 var pos = new SlotPosition(x, y);
                 if (pos == excludePos) continue;
