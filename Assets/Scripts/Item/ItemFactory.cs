@@ -24,7 +24,7 @@ public class ItemFactory : IInitializable, IItemSpawner, IDisposable
     {
         if (!_gridWriter.TryGetEmptyPosition(out var pos))
         {
-            EventBus.Trigger<string>(EventType.OnWarning, "Grid is full!");
+            EventBus.Trigger<string>(EventType.OnWarning, Constants.Text.GridFullWarning);
             return;
         }
 

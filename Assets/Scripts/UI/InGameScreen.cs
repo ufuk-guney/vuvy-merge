@@ -44,7 +44,7 @@ public class InGameScreen : MonoBehaviour, IScreen
     private void OnReturnHomeClick()
     {
         EventBus.Trigger(EventType.OnReturnHomeClick);
-        _scoreText.text = "" ;
+        _scoreText.text = Constants.Text.EmptyScore;
     }
 
     private void OnMerge(int score)
@@ -56,7 +56,7 @@ public class InGameScreen : MonoBehaviour, IScreen
     private void ResetScore()
     {
         _totalScore = 0;
-        _scoreText.text = "";
+        _scoreText.text = Constants.Text.EmptyScore;
     }
 
     private void ShowWarning(string message)

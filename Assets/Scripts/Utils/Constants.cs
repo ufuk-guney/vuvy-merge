@@ -21,6 +21,13 @@ public static class Constants
         public const int StartingLevel = 0;
     }
 
+    public static class Text
+    {
+        public const string EmptyScore = "";
+        public const string MaxLevelWarning = "Max level!";
+        public const string GridFullWarning = "Grid is full!";
+    }
+
     public static class Animation
     {
         public const float DragScale = 1.1f;
@@ -36,4 +43,5 @@ public static class Constants
         public const float WarningFadeOutDuration = 0.5f;
         public const float WarningFloatDistance = 50f;
     }
+    
 }

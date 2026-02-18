@@ -4,12 +4,12 @@ using VContainer.Unity;
 
 public class GridScope : IInitializable, IDisposable
 {
-    private readonly LifetimeScope _parentScope;
-    private LifetimeScope _childScope;
+    private readonly LifetimeScope _lifetimeScope;
+    private LifetimeScope _gridScope;
 
-    public GridScope(LifetimeScope parentScope)
+    public GridScope(LifetimeScope lifetimeScope)
     {
-        _parentScope = parentScope;
+        _lifetimeScope = lifetimeScope;
     }
 
     public void Initialize()
@@ -19,9 +19,9 @@ public class GridScope : IInitializable, IDisposable
     }
     private void OnLevelStart()
     {
-        _childScope?.Dispose();
+        _gridScope?.Dispose();
 
-        _childScope = _parentScope.CreateChild(builder =>
+        _gridScope = _lifetimeScope.CreateChild(builder =>
         {
             builder.RegisterEntryPoint<GridController>(Lifetime.Scoped)
                 .As<IGridReader>()
@@ -39,14 +39,14 @@ public class GridScope : IInitializable, IDisposable
 
     private void OnReturnHome()
     {
-        _childScope?.Dispose();
-        _childScope = null;
+        _gridScope?.Dispose();
+        _gridScope = null;
     }
 
     public void Dispose()
     {
         EventBus.Unsubscribe(EventType.OnLevelStartClick, OnLevelStart);
         EventBus.Unsubscribe(EventType.OnReturnHomeClick, OnReturnHome);
-        _childScope?.Dispose();
+        _gridScope?.Dispose();
     }
 }

@@ -2,6 +2,18 @@ using DG.Tweening;
 
 public static class GridItemExtensions
 {
+    public static void BeginDrag(this IItemView view)
+    {
+        view.Transform.DOScale(Constants.Animation.DragScale, Constants.Animation.TweenDuration).SetEase(Ease.OutBack);
+        view.SortingOrder = Constants.Animation.DragSortingOrder;
+    }
+
+    public static void EndDrag(this IItemView view, int originalSortingOrder)
+    {
+        view.Transform.DOScale(1f, Constants.Animation.TweenDuration).SetEase(Ease.OutBack);
+        view.SortingOrder = originalSortingOrder;
+    }
+
     public static void AnimateToPosition(this IItemView view, SlotPosition pos)
     {
         view.Transform.DOScale(Constants.Animation.SquishScale, Constants.Animation.SquishDuration).SetEase(Ease.OutBack);
