@@ -33,21 +33,12 @@ public class DropHandler
             return;
         }
 
-        TryMergeOrReturn(draggedView, startPos, dropPos);
+        HandleOccupiedDrop(draggedView, startPos, dropPos);
     }
 
-    private void TryMergeOrReturn(IItemView draggedView, SlotPosition startPos, SlotPosition dropPos)
+    private void HandleOccupiedDrop(IItemView draggedView, SlotPosition startPos, SlotPosition dropPos)
     {
-        var dragSlot = _gridReader.GetSlotAt(startPos);
-        var dropSlot = _gridReader.GetSlotAt(dropPos);
-
-        if (dragSlot.Data.HasValue && dropSlot.Data.HasValue
-            && dragSlot.Data.Value.CanMerge(dropSlot.Data.Value)
-            && _mergeHandler.TryMerge(startPos, dropPos))
-        {
-            return;
-        }
-
+        if (_mergeHandler.TryMerge(startPos, dropPos)) return;
         draggedView.AnimateToPosition(startPos);
     }
 }

@@ -1,4 +1,3 @@
-using DG.Tweening;
 using UnityEngine;
 
 public class DragHandler
@@ -7,10 +6,7 @@ public class DragHandler
     private readonly IGridHighlighter _gridHighlighter;
     private readonly DropHandler _dropHandler;
 
-    private IItemView _draggedView;
-    private SlotPosition _startPos;
-    private bool _isDragging;
-    private int _originalSortingOrder;
+    private DragSession? _activeSession;
 
     public DragHandler(IGridReader gridReader, IGridHighlighter gridHighlighter, DropHandler dropHandler)
     {
@@ -26,13 +22,9 @@ public class DragHandler
         var slot = _gridReader.GetSlotAt(pos);
         if (slot.IsEmpty) return false;
 
-        _draggedView = _gridReader.GetItemViewAt(pos);
-        _startPos = pos;
-        _isDragging = true;
-
-        _draggedView.Transform.DOScale(Constants.Animation.DragScale, Constants.Animation.TweenDuration).SetEase(Ease.OutBack);
-        _originalSortingOrder = _draggedView.SortingOrder;
-        _draggedView.SortingOrder = Constants.Animation.DragSortingOrder;
+        var view = _gridReader.GetItemViewAt(pos);
+        _activeSession = new DragSession(view, pos, view.SortingOrder);
+        view.BeginDrag();
 
         if (slot.Data.HasValue)
             _gridHighlighter.HighlightMergeablePositions(slot.Data.Value, pos);
@@ -42,21 +34,33 @@ public class DragHandler
 
     public void UpdateDragPosition(Vector3 worldPos)
     {
-        if (!_isDragging || _draggedView == null) return;
-        _draggedView.Transform.position = new Vector3(worldPos.x, worldPos.y, 0f);
+        if (!_activeSession.HasValue) return;
+        _activeSession.Value.View.Transform.position = worldPos;
     }
 
     public void EndDrag(SlotPosition dropPos)
     {
-        if (!_isDragging || _draggedView == null) return;
-        _isDragging = false;
+        if (!_activeSession.HasValue) return;
+
+        var session = _activeSession.Value;
+        _activeSession = null;
 
         _gridHighlighter.ResetHighlights();
+        session.View.EndDrag(session.OriginalSortingOrder);
+        _dropHandler.HandleDrop(session.View, session.StartPos, dropPos);
+    }
 
-        _draggedView.Transform.DOScale(1f, Constants.Animation.TweenDuration).SetEase(Ease.OutBack);
-        _draggedView.SortingOrder = _originalSortingOrder;
+    private readonly struct DragSession
+    {
+        public readonly IItemView View;
+        public readonly SlotPosition StartPos;
+        public readonly int OriginalSortingOrder;
 
-        _dropHandler.HandleDrop(_draggedView, _startPos, dropPos);
-        _draggedView = null;
+        public DragSession(IItemView view, SlotPosition startPos, int originalSortingOrder)
+        {
+            View = view;
+            StartPos = startPos;
+            OriginalSortingOrder = originalSortingOrder;
+        }
     }
 }
