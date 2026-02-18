@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class GridView
 {
-    private readonly BoardItemConfig _database;
+    private readonly ISlotView _tilePrefab;
     private ISlotView[,] _slotViews;
     private GridSize _gridSize;
 
-    public GridView(BoardItemConfig database)
+    public GridView(ISlotView tilePrefab)
     {
-        _database = database;
+        _tilePrefab = tilePrefab;
     }
 
     public void GenerateSlots(GridSize gridSize, Transform parent)
@@ -17,14 +17,12 @@ public class GridView
         _gridSize = gridSize;
         _slotViews = new ISlotView[_gridSize.Width, _gridSize.Height];
 
-        var slotPrefab = _database.TilePrefab;
         for (int y = 0; y < _gridSize.Height; y++)
         {
             for (int x = 0; x < _gridSize.Width; x++)
             {
                 var pos = new SlotPosition(x, y);
-                var slotView = Object.Instantiate(slotPrefab, pos.ToWorldPosition(), Quaternion.identity, parent);
-                _slotViews[x, y] = slotView;
+                _slotViews[x, y] = (ISlotView)Object.Instantiate((MonoBehaviour)_tilePrefab, pos.ToWorldPosition(), Quaternion.identity, parent);
             }
         }
     }

@@ -4,7 +4,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "BoardItemDatabase", menuName = "Game/Board Item Database")]
 public class BoardItemConfig : ScriptableObject
 {
-    public SlotView TilePrefab;
-    public ItemView ItemPrefab;
+    [SerializeField] private SlotView _slotPrefab;
+    [SerializeField] private ItemView _itemPrefab;
+
+    public ISlotView SlotPrefab => _slotPrefab;
+    public IItemView ItemPrefab => _itemPrefab;
     public List<ItemChainData> ItemChainDataList;
 }

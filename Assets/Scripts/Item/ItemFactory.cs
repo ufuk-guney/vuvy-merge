@@ -11,7 +11,7 @@ public class ItemFactory : IInitializable, IItemSpawner, IDisposable
     {
         _database = database;
         _gridWriter = gridWriter;
-        _itemPool = new ObjectPool<ItemView>(database.ItemPrefab, scope.transform, Constants.Pool.ItemPoolInitialSize);
+        _itemPool = new ObjectPool<ItemView>((ItemView)database.ItemPrefab, scope.transform, Constants.Pool.ItemPoolInitialSize);
     }
 
     public void Initialize()

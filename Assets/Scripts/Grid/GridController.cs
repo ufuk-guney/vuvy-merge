@@ -12,7 +12,7 @@ public class GridController : IInitializable, IGridReader, IGridWriter, IGridHig
         _scope = scope;
         _database = database;
         _gridData = new GridData();
-        _gridView = new GridView(database);
+        _gridView = new GridView(database.SlotPrefab);
     }
 
     public void Initialize()
