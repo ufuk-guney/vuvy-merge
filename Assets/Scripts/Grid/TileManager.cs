@@ -1,13 +1,13 @@
 using UnityEngine;
 
-public class TileHandler
+public class TileManager
 {
     private readonly BoardItemConfig _database;
     private TileView[,] _tileViews;
     private int _width;
     private int _height;
 
-    public TileHandler(BoardItemConfig database)
+    public TileManager(BoardItemConfig database)
     {
         _database = database;
     }

@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using VContainer.Unity;
 
-public class ItemFactory : IInitializable, IDisposable
+public class ItemFactory : IInitializable, IDisposable, IItemSpawner
 {
     private readonly ObjectPool<ItemView> _itemPool;
     private readonly GridStateManager _gridState;

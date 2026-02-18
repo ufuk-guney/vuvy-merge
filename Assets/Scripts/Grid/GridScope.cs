@@ -23,7 +23,7 @@ public class GridScope : IInitializable, IDisposable
 
         _childScope = _parentScope.CreateChild(builder =>
         {
-            builder.Register<TileHandler>(Lifetime.Scoped);
+            builder.Register<TileManager>(Lifetime.Scoped);
             builder.Register<GridStateManager>(Lifetime.Scoped);
 
             builder.Register<DragHandler>(Lifetime.Scoped);
@@ -31,7 +31,7 @@ public class GridScope : IInitializable, IDisposable
             builder.Register<MergeHandler>(Lifetime.Scoped);
 
             builder.RegisterEntryPoint<GridInitializer>();
-            builder.RegisterEntryPoint<ItemFactory>().AsSelf();
+            builder.RegisterEntryPoint<ItemFactory>().AsSelf().As<IItemSpawner>();
             builder.RegisterEntryPoint<GridInputController>();
         });
     }

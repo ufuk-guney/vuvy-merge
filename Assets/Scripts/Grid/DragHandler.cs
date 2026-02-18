@@ -5,14 +5,14 @@ public class DragHandler
 {
     private readonly GridStateManager _gridState;
     private readonly DropHandler _dropHandler;
-    private readonly TileHandler _tileHandler;
+    private readonly TileManager _tileHandler;
 
     private IItemView _draggedView;
     private SlotPosition _startPos;
     private bool _isDragging;
     private int _originalSortingOrder;
 
-    public DragHandler(GridStateManager gridState, DropHandler dropHandler, TileHandler tileHandler)
+    public DragHandler(GridStateManager gridState, DropHandler dropHandler, TileManager tileHandler)
     {
         _gridState = gridState;
         _dropHandler = dropHandler;

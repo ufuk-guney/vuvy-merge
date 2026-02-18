@@ -1,13 +1,13 @@
 public class MergeHandler
 {
     private readonly GridStateManager _gridState;
-    private readonly ItemFactory _itemFactory;
+    private readonly IItemSpawner _itemSpawner;
     private readonly BoardItemConfig _database;
 
-    public MergeHandler(GridStateManager gridState, ItemFactory itemFactory, BoardItemConfig database)
+    public MergeHandler(GridStateManager gridState, IItemSpawner itemSpawner, BoardItemConfig database)
     {
         _gridState = gridState;
-        _itemFactory = itemFactory;
+        _itemSpawner = itemSpawner;
         _database = database;
     }
 
@@ -33,10 +33,10 @@ public class MergeHandler
         _gridState.RemoveItem(dragPos);
         _gridState.RemoveItem(dropPos);
 
-        _itemFactory.ReturnView(dragSlot.View);
-        _itemFactory.ReturnView(dropSlot.View);
+        _itemSpawner.ReturnView(dragSlot.View);
+        _itemSpawner.ReturnView(dropSlot.View);
 
-        _itemFactory.SpawnItem(dragData.ChainType, nextLevel, dropPos);
+        _itemSpawner.SpawnItem(dragData.ChainType, nextLevel, dropPos);
 
         int score = nextLevel * Constants.Scoring.ScorePerLevel;
         EventManager.Trigger(EventType.OnMerge, score);
