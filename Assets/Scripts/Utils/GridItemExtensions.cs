@@ -38,14 +38,9 @@ namespace VuvyMerge.Grid
         }
 
         public static bool CanMerge(this ItemData a, ItemData b)
-        {
-            return a.ChainType == b.ChainType && a.Level == b.Level;
-        }
+            => a.ChainType == b.ChainType && a.Level == b.Level;
 
         public static bool CanMerge(this ItemData a, ItemData b, int maxLevel)
-        {
-            if (!a.CanMerge(b)) return false;
-            return (a.Level + 1) <= maxLevel;
-        }
+            => a.CanMerge(b) && (a.Level + 1) <= maxLevel;
     }
 }

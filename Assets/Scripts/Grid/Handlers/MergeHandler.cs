@@ -15,7 +15,7 @@ namespace VuvyMerge.Grid
             _gridReader = gridReader;
             _gridWriter = gridWriter;
             _itemSpawner = itemSpawner;
-            _chainLookup = BuildChainLookup(database.ItemChainDataList);
+            _chainLookup = database.GetChainLookUp();
         }
 
         public bool TryMerge(SlotPosition dragPos, SlotPosition dropPos)
@@ -66,12 +66,5 @@ namespace VuvyMerge.Grid
             EventBus.Trigger(EventType.OnMerge, nextLevel * Constants.Scoring.ScorePerLevel);
         }
 
-        private static Dictionary<ItemChainType, ItemChainData> BuildChainLookup(List<ItemChainData> chainDataList)
-        {
-            var lookup = new Dictionary<ItemChainType, ItemChainData>(chainDataList.Count);
-            foreach (var chainData in chainDataList)
-                lookup[chainData.ChainType] = chainData;
-            return lookup;
-        }
     }
 }

@@ -42,7 +42,7 @@ namespace VuvyMerge.Grid
 
         private void OnPointerMoved(InputAction.CallbackContext ctx)
         {
-            if(_isDragging)
+            if (!_isDragging) return;
             if (ctx.control.device is not Pointer pointer || !pointer.added) return;
             if (ctx.ReadValue<Vector2>().ScreenToWorld(_camera) is not { } worldPos) return;
             _dragHandler.UpdateDragPosition(worldPos);

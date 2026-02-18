@@ -8,7 +8,7 @@ namespace VuvyMerge
 {
     public class GameLifetimeScope : LifetimeScope
     {
-        [SerializeField] private BoardItemConfig _boardItemDatabase;
+        [SerializeField] private BoardItemConfig _boardItemConfig;
 
         protected override void Configure(IContainerBuilder builder)
         {
@@ -17,7 +17,7 @@ namespace VuvyMerge
 
             builder.RegisterEntryPoint<ScreenManager>();
 
-            builder.RegisterInstance(_boardItemDatabase);
+            builder.RegisterInstance(_boardItemConfig);
             builder.RegisterEntryPoint<GridScope>();
         }
     }

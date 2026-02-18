@@ -29,27 +29,19 @@ namespace VuvyMerge.Grid
             }
         }
 
-        public void RegisterItemView(SlotPosition pos, IItemView view)
-        {
-            _slotViews[pos.X, pos.Y].SetItemView(view);
-        }
+        public void RegisterItemView(SlotPosition pos, IItemView view) => _slotViews[pos.X, pos.Y].SetItemView(view);
 
-        public void UnregisterItemView(SlotPosition pos)
-        {
-            _slotViews[pos.X, pos.Y].ClearItemView();
-        }
+        public void UnregisterItemView(SlotPosition pos) => _slotViews[pos.X, pos.Y].ClearItemView();
 
         public void MoveItemView(SlotPosition from, SlotPosition to)
         {
-            var view = _slotViews[from.X, from.Y].ItemView;
-            _slotViews[from.X, from.Y].ClearItemView();
+            var fromSlot = _slotViews[from.X, from.Y];
+            var view = fromSlot.ItemView;
+            fromSlot.ClearItemView();
             _slotViews[to.X, to.Y].SetItemView(view);
         }
 
-        public IItemView GetItemViewAt(SlotPosition pos)
-        {
-            return _slotViews[pos.X, pos.Y].ItemView;
-        }
+        public IItemView GetItemViewAt(SlotPosition pos) => _slotViews[pos.X, pos.Y].ItemView;
 
         public void HighlightPositions(IReadOnlyList<SlotPosition> positions)
         {

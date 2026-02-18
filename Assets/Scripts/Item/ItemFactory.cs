@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using VContainer.Unity;
 using VuvyMerge.Data;
 
@@ -8,12 +9,14 @@ namespace VuvyMerge.Grid
     {
         private readonly ObjectPool<ItemView> _itemPool;
         private readonly IGridWriter _gridWriter;
-        private readonly BoardItemConfig _database;
+        private readonly List<ItemChainData> _chainDataList;
+        private readonly Dictionary<ItemChainType, ItemChainData> _chainDataByType;
 
         public ItemFactory(BoardItemConfig database, IGridWriter gridWriter, LifetimeScope scope)
         {
-            _database = database;
             _gridWriter = gridWriter;
+            _chainDataList = database.ItemChainDataList;
+            _chainDataByType = database.GetChainLookUp();
             _itemPool = new ObjectPool<ItemView>((ItemView)database.ItemPrefab, scope.transform, Constants.Pool.ItemPoolInitialSize);
         }
 
@@ -31,23 +34,19 @@ namespace VuvyMerge.Grid
                 return;
             }
 
-            var chainDataList = _database.ItemChainDataList;
-            var chainData = chainDataList[UnityEngine.Random.Range(0, chainDataList.Count)];
-
+            var chainData = _chainDataList[UnityEngine.Random.Range(0, _chainDataList.Count)];
             SpawnItem(chainData.ChainType, Constants.Item.StartingLevel, pos);
         }
 
         public void SpawnItem(ItemChainType chainType, int level, SlotPosition pos)
         {
-            var chainData = _database.ItemChainDataList.Find(c => c.ChainType == chainType);
-            if (chainData == null) return;
+            if (!_chainDataByType.TryGetValue(chainType, out var chainData)) return;
 
-            var data = new ItemData(chainType, level);
             var view = _itemPool.Get();
             view.Initialize(chainData.Sprites[level]);
             view.Transform.position = pos.ToWorldPosition();
 
-            _gridWriter.PlaceItem(pos, data, view);
+            _gridWriter.PlaceItem(pos, new ItemData(chainType, level), view);
         }
 
         public void ReturnView(IItemView view)

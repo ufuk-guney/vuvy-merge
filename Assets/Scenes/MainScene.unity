@@ -931,7 +931,7 @@ MonoBehaviour:
     TypeName: 
   autoRun: 1
   autoInjectGameObjects: []
-  _boardItemDatabase: {fileID: 11400000, guid: 8c86dd58f08e5df4c93a01b83987de8d, type: 2}
+  _boardItemConfig: {fileID: 11400000, guid: 8c86dd58f08e5df4c93a01b83987de8d, type: 2}
 --- !u!4 &630614922
 Transform:
   m_ObjectHideFlags: 0

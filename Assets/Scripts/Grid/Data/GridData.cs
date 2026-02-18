@@ -1,13 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
-using VuvyMerge.Data;
 
 namespace VuvyMerge.Grid
 {
     public class GridData
     {
         private SlotData[,] _slots;
-        private readonly List<SlotPosition> _emptyPositions = new();//this is for o(n)
+        private readonly List<SlotPosition> _emptyPositions = new();//o(n)
         private readonly List<SlotPosition> _mergeablePositions = new();
         private GridSize _size;
 
@@ -26,15 +25,10 @@ namespace VuvyMerge.Grid
                 }
         }
 
-        public SlotData GetSlotAt(SlotPosition pos)
-        {
-            return _slots[pos.X, pos.Y];
-        }
+        public SlotData GetSlotAt(SlotPosition pos) => _slots[pos.X, pos.Y];
 
         public bool IsValidPosition(SlotPosition pos)
-        {
-            return pos.X >= 0 && pos.X < _size.Width && pos.Y >= 0 && pos.Y < _size.Height;
-        }
+            => pos.X >= 0 && pos.X < _size.Width && pos.Y >= 0 && pos.Y < _size.Height;
 
         public bool TryGetEmptyPosition(out SlotPosition position)
         {
@@ -75,12 +69,9 @@ namespace VuvyMerge.Grid
             }
         }
 
-        public List<SlotPosition> GetMergeablePositions(ItemData draggedData, SlotPosition excludePos, BoardItemConfig config)
+        public List<SlotPosition> GetMergeablePositions(ItemData draggedData, SlotPosition excludePos, int maxLevel)
         {
             _mergeablePositions.Clear();
-
-            var chainData = config.ItemChainDataList.Find(c => c.ChainType == draggedData.ChainType);
-            if (chainData == null) return _mergeablePositions;
 
             for (int x = 0; x < _size.Width; x++)
                 for (int y = 0; y < _size.Height; y++)
@@ -89,7 +80,7 @@ namespace VuvyMerge.Grid
                     if (pos == excludePos) continue;
 
                     var slot = _slots[x, y];
-                    if (slot.Data.HasValue && draggedData.CanMerge(slot.Data.Value, chainData.MaxLevel))
+                    if (slot.Data.HasValue && draggedData.CanMerge(slot.Data.Value, maxLevel))
                         _mergeablePositions.Add(pos);
                 }
 

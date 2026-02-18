@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using VContainer.Unity;
 using VuvyMerge.Data;
 
@@ -7,15 +8,15 @@ namespace VuvyMerge.Grid
     {
         private readonly GridData _gridData;
         private readonly GridView _gridView;
-        private readonly BoardItemConfig _database;
+        private readonly Dictionary<ItemChainType, ItemChainData> _chainLookup;
         private readonly LifetimeScope _scope;
 
         public GridController(BoardItemConfig database, LifetimeScope scope)
         {
             _scope = scope;
-            _database = database;
             _gridData = new GridData();
             _gridView = new GridView(database.SlotPrefab);
+            _chainLookup = database.GetChainLookUp();
         }
 
         public void Initialize()
@@ -26,8 +27,8 @@ namespace VuvyMerge.Grid
         }
 
         // IGridReader
-        public bool IsValidPosition(SlotPosition pos) => _gridData.IsValidPosition(pos);
-        public SlotData GetSlotAt(SlotPosition pos)   => _gridData.GetSlotAt(pos);
+        public bool IsValidPosition(SlotPosition pos)    => _gridData.IsValidPosition(pos);
+        public SlotData GetSlotAt(SlotPosition pos)      => _gridData.GetSlotAt(pos);
         public IItemView GetItemViewAt(SlotPosition pos) => _gridView.GetItemViewAt(pos);
 
         // IGridWriter
@@ -54,7 +55,8 @@ namespace VuvyMerge.Grid
         // IGridHighlighter
         public void HighlightMergeablePositions(ItemData draggedData, SlotPosition excludePos)
         {
-            var positions = _gridData.GetMergeablePositions(draggedData, excludePos, _database);
+            if (!_chainLookup.TryGetValue(draggedData.ChainType, out var chainData)) return;
+            var positions = _gridData.GetMergeablePositions(draggedData, excludePos, chainData.MaxLevel);
             _gridView.HighlightPositions(positions);
         }
 
