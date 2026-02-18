@@ -1,11 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "ItemChainData", menuName = "Game/Item Chain Data")]
-public class ItemChainData : ScriptableObject
+namespace VuvyMerge.Data
 {
-    public ItemChainType ChainType;
-    public List<Sprite> Sprites;
+    [CreateAssetMenu(fileName = "ItemChainData", menuName = "Game/Item Chain Data")]
+    public class ItemChainData : ScriptableObject
+    {
+        public ItemChainType ChainType;
+        public List<Sprite> Sprites;
 
-    public int MaxLevel => Sprites.Count - 1;
+        public int MaxLevel => Sprites.Count - 1;
+    }
 }

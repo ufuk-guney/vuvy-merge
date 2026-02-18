@@ -1,11 +1,14 @@
-public readonly struct GridSize
+namespace VuvyMerge.Grid
 {
-    public int Width { get; }
-    public int Height { get; }
-
-    public GridSize(int width, int height)
+    public readonly struct GridSize
     {
-        Width = width;
-        Height = height;
+        public int Width { get; }
+        public int Height { get; }
+
+        public GridSize(int width, int height)
+        {
+            Width = width;
+            Height = height;
+        }
     }
 }

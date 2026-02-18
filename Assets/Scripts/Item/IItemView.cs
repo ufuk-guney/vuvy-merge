@@ -1,9 +1,12 @@
 using UnityEngine;
 
-public interface IItemView
+namespace VuvyMerge.Grid
 {
-    Transform Transform { get; }
-    int SortingOrder { get; set; }
-    void Initialize(Sprite sprite);
-    void ResetView();
+    public interface IItemView
+    {
+        Transform Transform { get; }
+        int SortingOrder { get; set; }
+        void Initialize(Sprite sprite);
+        void ResetView();
+    }
 }

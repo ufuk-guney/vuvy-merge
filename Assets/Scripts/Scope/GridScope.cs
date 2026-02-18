@@ -1,52 +1,57 @@
 using System;
 using VContainer;
 using VContainer.Unity;
+using VuvyMerge.Grid;
 
-public class GridScope : IInitializable, IDisposable
+namespace VuvyMerge
 {
-    private readonly LifetimeScope _lifetimeScope;
-    private LifetimeScope _gridScope;
-
-    public GridScope(LifetimeScope lifetimeScope)
+    public class GridScope : IInitializable, IDisposable
     {
-        _lifetimeScope = lifetimeScope;
-    }
+        private readonly LifetimeScope _lifetimeScope;
+        private LifetimeScope _gridScope;
 
-    public void Initialize()
-    {
-        EventBus.Subscribe(EventType.OnLevelStartClick, OnLevelStart);
-        EventBus.Subscribe(EventType.OnReturnHomeClick, OnReturnHome);
-    }
-    private void OnLevelStart()
-    {
-        _gridScope?.Dispose();
-
-        _gridScope = _lifetimeScope.CreateChild(builder =>
+        public GridScope(LifetimeScope lifetimeScope)
         {
-            builder.RegisterEntryPoint<GridController>(Lifetime.Scoped)
-                .As<IGridReader>()
-                .As<IGridWriter>()
-                .As<IGridHighlighter>();
+            _lifetimeScope = lifetimeScope;
+        }
 
-            builder.Register<DragHandler>(Lifetime.Scoped);
-            builder.Register<DropHandler>(Lifetime.Scoped);
-            builder.Register<MergeHandler>(Lifetime.Scoped);
+        public void Initialize()
+        {
+            EventBus.Subscribe(EventType.OnLevelStartClick, OnLevelStart);
+            EventBus.Subscribe(EventType.OnReturnHomeClick, OnReturnHome);
+        }
 
-            builder.RegisterEntryPoint<ItemFactory>(Lifetime.Scoped).AsSelf().As<IItemSpawner>();
-            builder.RegisterEntryPoint<GridInputController>(Lifetime.Scoped);
-        });
-    }
+        private void OnLevelStart()
+        {
+            _gridScope?.Dispose();
 
-    private void OnReturnHome()
-    {
-        _gridScope?.Dispose();
-        _gridScope = null;
-    }
+            _gridScope = _lifetimeScope.CreateChild(builder =>
+            {
+                builder.RegisterEntryPoint<GridController>(Lifetime.Scoped)
+                    .As<IGridReader>()
+                    .As<IGridWriter>()
+                    .As<IGridHighlighter>();
 
-    public void Dispose()
-    {
-        EventBus.Unsubscribe(EventType.OnLevelStartClick, OnLevelStart);
-        EventBus.Unsubscribe(EventType.OnReturnHomeClick, OnReturnHome);
-        _gridScope?.Dispose();
+                builder.Register<DragHandler>(Lifetime.Scoped);
+                builder.Register<DropHandler>(Lifetime.Scoped);
+                builder.Register<MergeHandler>(Lifetime.Scoped);
+
+                builder.RegisterEntryPoint<ItemFactory>(Lifetime.Scoped).AsSelf().As<IItemSpawner>();
+                builder.RegisterEntryPoint<GridInputController>(Lifetime.Scoped);
+            });
+        }
+
+        private void OnReturnHome()
+        {
+            _gridScope?.Dispose();
+            _gridScope = null;
+        }
+
+        public void Dispose()
+        {
+            EventBus.Unsubscribe(EventType.OnLevelStartClick, OnLevelStart);
+            EventBus.Unsubscribe(EventType.OnReturnHomeClick, OnReturnHome);
+            _gridScope?.Dispose();
+        }
     }
 }

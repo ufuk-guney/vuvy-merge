@@ -1,11 +1,14 @@
-public struct ItemData
+namespace VuvyMerge.Grid
 {
-    public ItemChainType ChainType;
-    public int Level;
-
-    public ItemData(ItemChainType chainType, int level)
+    public struct ItemData
     {
-        ChainType = chainType;
-        Level = level;
+        public ItemChainType ChainType;
+        public int Level;
+
+        public ItemData(ItemChainType chainType, int level)
+        {
+            ChainType = chainType;
+            Level = level;
+        }
     }
 }

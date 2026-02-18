@@ -1,6 +1,9 @@
-public interface IGridReader
+namespace VuvyMerge.Grid
 {
-    bool IsValidPosition(SlotPosition pos);
-    SlotData GetSlotAt(SlotPosition pos);
-    IItemView GetItemViewAt(SlotPosition pos);
+    public interface IGridReader
+    {
+        bool IsValidPosition(SlotPosition pos);
+        SlotData GetSlotAt(SlotPosition pos);
+        IItemView GetItemViewAt(SlotPosition pos);
+    }
 }

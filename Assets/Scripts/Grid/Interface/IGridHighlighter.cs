@@ -1,5 +1,8 @@
-public interface IGridHighlighter
+namespace VuvyMerge.Grid
 {
-    void HighlightMergeablePositions(ItemData draggedData, SlotPosition excludePos);
-    void ResetHighlights();
+    public interface IGridHighlighter
+    {
+        void HighlightMergeablePositions(ItemData draggedData, SlotPosition excludePos);
+        void ResetHighlights();
+    }
 }

@@ -1,7 +1,10 @@
-public interface IGridWriter
+namespace VuvyMerge.Grid
 {
-    bool TryGetEmptyPosition(out SlotPosition pos);
-    void PlaceItem(SlotPosition pos, ItemData data, IItemView view);
-    void RemoveItem(SlotPosition pos);
-    void MoveItem(SlotPosition from, SlotPosition to);
+    public interface IGridWriter
+    {
+        bool TryGetEmptyPosition(out SlotPosition pos);
+        void PlaceItem(SlotPosition pos, ItemData data, IItemView view);
+        void RemoveItem(SlotPosition pos);
+        void MoveItem(SlotPosition from, SlotPosition to);
+    }
 }

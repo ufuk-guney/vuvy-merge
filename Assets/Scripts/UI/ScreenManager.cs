@@ -2,57 +2,60 @@ using System;
 using System.Collections.Generic;
 using VContainer.Unity;
 
-public class ScreenManager : IInitializable, IDisposable
+namespace VuvyMerge.UI
 {
-    private readonly Dictionary<ScreenType, IScreen> _screens = new();
-    private IScreen _currentScreen;
-
-    public ScreenManager(IReadOnlyList<IScreen> screens)
+    public class ScreenManager : IInitializable, IDisposable
     {
-        foreach (var screen in screens)
-            _screens[screen.ScreenType] = screen;
-    }
+        private readonly Dictionary<ScreenType, IScreen> _screens = new();
+        private IScreen _currentScreen;
 
-    public void Initialize()
-    {
-        foreach (var screen in _screens.Values)
+        public ScreenManager(IReadOnlyList<IScreen> screens)
         {
-            screen.Initialize();
-            screen.Hide();
+            foreach (var screen in screens)
+                _screens[screen.ScreenType] = screen;
         }
 
-        EventBus.Subscribe(EventType.OnLevelStartClick, OnLevelStartClick);
-        EventBus.Subscribe(EventType.OnReturnHomeClick, OnReturnHomeClick);
-
-        ShowScreen(ScreenType.Home);
-    }
-
-    public void ShowScreen(ScreenType screenType)
-    {
-        if (_screens.TryGetValue(screenType, out var next) && next != _currentScreen)
+        public void Initialize()
         {
-            _currentScreen?.Hide();
-            next.Show();
-            _currentScreen = next;
+            foreach (var screen in _screens.Values)
+            {
+                screen.Initialize();
+                screen.Hide();
+            }
+
+            EventBus.Subscribe(EventType.OnLevelStartClick, OnLevelStartClick);
+            EventBus.Subscribe(EventType.OnReturnHomeClick, OnReturnHomeClick);
+
+            ShowScreen(ScreenType.Home);
         }
-    }
 
-    private void OnLevelStartClick()
-    {
-        ShowScreen(ScreenType.InGame);
-    }
+        public void ShowScreen(ScreenType screenType)
+        {
+            if (_screens.TryGetValue(screenType, out var next) && next != _currentScreen)
+            {
+                _currentScreen?.Hide();
+                next.Show();
+                _currentScreen = next;
+            }
+        }
 
-    private void OnReturnHomeClick()
-    {
-        ShowScreen(ScreenType.Home);
-    }
+        private void OnLevelStartClick()
+        {
+            ShowScreen(ScreenType.InGame);
+        }
 
-    public void Dispose()
-    {
-        EventBus.Unsubscribe(EventType.OnLevelStartClick, OnLevelStartClick);
-        EventBus.Unsubscribe(EventType.OnReturnHomeClick, OnReturnHomeClick);
+        private void OnReturnHomeClick()
+        {
+            ShowScreen(ScreenType.Home);
+        }
 
-        foreach (var screen in _screens.Values)
-            screen.Dispose();
+        public void Dispose()
+        {
+            EventBus.Unsubscribe(EventType.OnLevelStartClick, OnLevelStartClick);
+            EventBus.Unsubscribe(EventType.OnReturnHomeClick, OnReturnHomeClick);
+
+            foreach (var screen in _screens.Values)
+                screen.Dispose();
+        }
     }
 }

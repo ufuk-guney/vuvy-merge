@@ -1,22 +1,25 @@
-public struct SlotData
+namespace VuvyMerge.Grid
 {
-    public SlotPosition Position { get; }
-    public ItemData? Data { get; internal set; }
-    public bool IsEmpty => !Data.HasValue;
-
-    public SlotData(SlotPosition position)
+    public struct SlotData
     {
-        Position = position;
-        Data = null;
-    }
+        public SlotPosition Position { get; }
+        public ItemData? Data { get; internal set; }
+        public bool IsEmpty => !Data.HasValue;
 
-    public void Place(ItemData data)
-    {
-        Data = data;
-    }
+        public SlotData(SlotPosition position)
+        {
+            Position = position;
+            Data = null;
+        }
 
-    public void Clear()
-    {
-        Data = null;
+        public void Place(ItemData data)
+        {
+            Data = data;
+        }
+
+        public void Clear()
+        {
+            Data = null;
+        }
     }
 }

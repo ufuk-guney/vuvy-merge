@@ -1,34 +1,37 @@
 using UnityEngine;
 
-public class SlotView : MonoBehaviour, ISlotView
+namespace VuvyMerge.Grid
 {
-    [SerializeField] private SpriteRenderer _spriteRenderer;
-    private Color _originalColor;
-
-    public IItemView ItemView { get; private set; }
-
-    private void Awake()
+    public class SlotView : MonoBehaviour, ISlotView
     {
-        _originalColor = _spriteRenderer.color;
-    }
+        [SerializeField] private SpriteRenderer _spriteRenderer;
+        private Color _originalColor;
 
-    public void SetHighlight(Color color)
-    {
-        _spriteRenderer.color = color;
-    }
+        public IItemView ItemView { get; private set; }
 
-    public void ResetHighlight()
-    {
-        _spriteRenderer.color = _originalColor;
-    }
+        private void Awake()
+        {
+            _originalColor = _spriteRenderer.color;
+        }
 
-    public void SetItemView(IItemView view)
-    {
-        ItemView = view;
-    }
+        public void SetHighlight(Color color)
+        {
+            _spriteRenderer.color = color;
+        }
 
-    public void ClearItemView()
-    {
-        ItemView = null;
+        public void ResetHighlight()
+        {
+            _spriteRenderer.color = _originalColor;
+        }
+
+        public void SetItemView(IItemView view)
+        {
+            ItemView = view;
+        }
+
+        public void ClearItemView()
+        {
+            ItemView = null;
+        }
     }
 }

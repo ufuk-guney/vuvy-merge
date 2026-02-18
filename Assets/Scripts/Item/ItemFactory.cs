@@ -1,61 +1,65 @@
 using System;
 using VContainer.Unity;
+using VuvyMerge.Data;
 
-public class ItemFactory : IInitializable, IItemSpawner, IDisposable
+namespace VuvyMerge.Grid
 {
-    private readonly ObjectPool<ItemView> _itemPool;
-    private readonly IGridWriter _gridWriter;
-    private readonly BoardItemConfig _database;
-
-    public ItemFactory(BoardItemConfig database, IGridWriter gridWriter, LifetimeScope scope)
+    public class ItemFactory : IInitializable, IItemSpawner, IDisposable
     {
-        _database = database;
-        _gridWriter = gridWriter;
-        _itemPool = new ObjectPool<ItemView>((ItemView)database.ItemPrefab, scope.transform, Constants.Pool.ItemPoolInitialSize);
-    }
+        private readonly ObjectPool<ItemView> _itemPool;
+        private readonly IGridWriter _gridWriter;
+        private readonly BoardItemConfig _database;
 
-    public void Initialize()
-    {
-        _itemPool.Prewarm();
-        EventBus.Subscribe(EventType.OnGenerateClick, OnGenerate);
-    }
-
-    private void OnGenerate()
-    {
-        if (!_gridWriter.TryGetEmptyPosition(out var pos))
+        public ItemFactory(BoardItemConfig database, IGridWriter gridWriter, LifetimeScope scope)
         {
-            EventBus.Trigger<string>(EventType.OnWarning, Constants.Text.GridFullWarning);
-            return;
+            _database = database;
+            _gridWriter = gridWriter;
+            _itemPool = new ObjectPool<ItemView>((ItemView)database.ItemPrefab, scope.transform, Constants.Pool.ItemPoolInitialSize);
         }
 
-        var chainDataList = _database.ItemChainDataList;
-        var chainData = chainDataList[UnityEngine.Random.Range(0, chainDataList.Count)];
+        public void Initialize()
+        {
+            _itemPool.Prewarm();
+            EventBus.Subscribe(EventType.OnGenerateClick, OnGenerate);
+        }
 
-        SpawnItem(chainData.ChainType, Constants.Item.StartingLevel, pos);
-    }
+        private void OnGenerate()
+        {
+            if (!_gridWriter.TryGetEmptyPosition(out var pos))
+            {
+                EventBus.Trigger<string>(EventType.OnWarning, Constants.Text.GridFullWarning);
+                return;
+            }
 
-    public void SpawnItem(ItemChainType chainType, int level, SlotPosition pos)
-    {
-        var chainData = _database.ItemChainDataList.Find(c => c.ChainType == chainType);
-        if (chainData == null) return;
+            var chainDataList = _database.ItemChainDataList;
+            var chainData = chainDataList[UnityEngine.Random.Range(0, chainDataList.Count)];
 
-        var data = new ItemData(chainType, level);
-        var view = _itemPool.Get();
-        view.Initialize(chainData.Sprites[level]);
-        view.Transform.position = pos.ToWorldPosition();
+            SpawnItem(chainData.ChainType, Constants.Item.StartingLevel, pos);
+        }
 
-        _gridWriter.PlaceItem(pos, data, view);
-    }
+        public void SpawnItem(ItemChainType chainType, int level, SlotPosition pos)
+        {
+            var chainData = _database.ItemChainDataList.Find(c => c.ChainType == chainType);
+            if (chainData == null) return;
 
-    public void ReturnView(IItemView view)
-    {
-        view.ResetView();
-        if (view is ItemView gridItem)
-            _itemPool.Return(gridItem);
-    }
+            var data = new ItemData(chainType, level);
+            var view = _itemPool.Get();
+            view.Initialize(chainData.Sprites[level]);
+            view.Transform.position = pos.ToWorldPosition();
 
-    public void Dispose()
-    {
-        EventBus.Unsubscribe(EventType.OnGenerateClick, OnGenerate);
+            _gridWriter.PlaceItem(pos, data, view);
+        }
+
+        public void ReturnView(IItemView view)
+        {
+            view.ResetView();
+            if (view is ItemView gridItem)
+                _itemPool.Return(gridItem);
+        }
+
+        public void Dispose()
+        {
+            EventBus.Unsubscribe(EventType.OnGenerateClick, OnGenerate);
+        }
     }
 }

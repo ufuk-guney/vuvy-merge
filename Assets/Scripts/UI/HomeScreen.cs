@@ -1,34 +1,37 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HomeScreen : MonoBehaviour, IScreen
+namespace VuvyMerge.UI
 {
-    [SerializeField] private Button _levelStartButton;
-
-    public ScreenType ScreenType => ScreenType.Home;
-
-    public void Initialize()
+    public class HomeScreen : MonoBehaviour, IScreen
     {
-        _levelStartButton.onClick.AddListener(StartLevel);
-    }
+        [SerializeField] private Button _levelStartButton;
 
-    public void Show()
-    {
-        gameObject.SetActive(true);
-    }
+        public ScreenType ScreenType => ScreenType.Home;
 
-    public void Hide()
-    {
-        gameObject.SetActive(false);
-    }
+        public void Initialize()
+        {
+            _levelStartButton.onClick.AddListener(StartLevel);
+        }
 
-    private void StartLevel()
-    {
-        EventBus.Trigger(EventType.OnLevelStartClick);
-    }
+        public void Show()
+        {
+            gameObject.SetActive(true);
+        }
 
-    public void Dispose()
-    {
-        _levelStartButton.onClick.RemoveListener(StartLevel);
+        public void Hide()
+        {
+            gameObject.SetActive(false);
+        }
+
+        private void StartLevel()
+        {
+            EventBus.Trigger(EventType.OnLevelStartClick);
+        }
+
+        public void Dispose()
+        {
+            _levelStartButton.onClick.RemoveListener(StartLevel);
+        }
     }
 }

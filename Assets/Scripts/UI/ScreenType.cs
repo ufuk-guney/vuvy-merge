@@ -1,5 +1,8 @@
-public enum ScreenType
+namespace VuvyMerge.UI
 {
-    Home,
-    InGame
+    public enum ScreenType
+    {
+        Home,
+        InGame
+    }
 }

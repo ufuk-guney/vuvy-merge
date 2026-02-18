@@ -1,6 +1,9 @@
-public interface ISlotView : IHighlightable
+namespace VuvyMerge.Grid
 {
-    IItemView ItemView { get; }
-    void SetItemView(IItemView view);
-    void ClearItemView();
+    public interface ISlotView : IHighlightable
+    {
+        IItemView ItemView { get; }
+        void SetItemView(IItemView view);
+        void ClearItemView();
+    }
 }

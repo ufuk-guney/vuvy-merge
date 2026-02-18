@@ -1,19 +1,24 @@
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
+using VuvyMerge.Data;
+using VuvyMerge.UI;
 
-public class GameLifetimeScope : LifetimeScope
+namespace VuvyMerge
 {
-    [SerializeField] private BoardItemConfig _boardItemDatabase;
-
-    protected override void Configure(IContainerBuilder builder)
+    public class GameLifetimeScope : LifetimeScope
     {
-        builder.RegisterComponentInHierarchy<HomeScreen>().As<IScreen>();
-        builder.RegisterComponentInHierarchy<InGameScreen>().As<IScreen>();
+        [SerializeField] private BoardItemConfig _boardItemDatabase;
 
-        builder.RegisterEntryPoint<ScreenManager>();
+        protected override void Configure(IContainerBuilder builder)
+        {
+            builder.RegisterComponentInHierarchy<HomeScreen>().As<IScreen>();
+            builder.RegisterComponentInHierarchy<InGameScreen>().As<IScreen>();
 
-        builder.RegisterInstance(_boardItemDatabase);
-        builder.RegisterEntryPoint<GridScope>();
+            builder.RegisterEntryPoint<ScreenManager>();
+
+            builder.RegisterInstance(_boardItemDatabase);
+            builder.RegisterEntryPoint<GridScope>();
+        }
     }
 }

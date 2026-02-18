@@ -1,5 +1,8 @@
-public interface IItemSpawner
+namespace VuvyMerge.Grid
 {
-    void SpawnItem(ItemChainType chainType, int level, SlotPosition pos);
-    void ReturnView(IItemView view);
+    public interface IItemSpawner
+    {
+        void SpawnItem(ItemChainType chainType, int level, SlotPosition pos);
+        void ReturnView(IItemView view);
+    }
 }

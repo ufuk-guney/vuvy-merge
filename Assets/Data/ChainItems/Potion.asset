@@ -14,10 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ChainType: 2
   Sprites:
-  - {fileID: 21300000, guid: f060ef1c03fe06e48a228fd09873ebe7, type: 3}
-  - {fileID: 21300000, guid: 873b574a3ed634b4a871e6f3d1309e51, type: 3}
-  - {fileID: 21300000, guid: ebabc1419073a0e4aaf9d34cea7ddc8b, type: 3}
-  - {fileID: 21300000, guid: d03e12be1f0311c4da07518fe91b5ee0, type: 3}
   - {fileID: 21300000, guid: 2bbcb5f15fd464c4aab0247c3b66e872, type: 3}
+  - {fileID: 21300000, guid: 873b574a3ed634b4a871e6f3d1309e51, type: 3}
+  - {fileID: 21300000, guid: d03e12be1f0311c4da07518fe91b5ee0, type: 3}
   - {fileID: 21300000, guid: 5b11c8a6e12cd8643bfd3e09a6d3a5d3, type: 3}
-  - {fileID: 21300000, guid: 5e34fef0b33653446a86c290e7f8102c, type: 3}
+  - {fileID: 21300000, guid: f060ef1c03fe06e48a228fd09873ebe7, type: 3}

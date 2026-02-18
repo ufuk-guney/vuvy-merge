@@ -1,8 +1,10 @@
-public enum ItemChainType
+namespace VuvyMerge
 {
-    Food,
-    Gun,
-    Potion,
-    Diamond
-
+    public enum ItemChainType
+    {
+        Food,
+        Gun,
+        Potion,
+        Diamond
+    }
 }

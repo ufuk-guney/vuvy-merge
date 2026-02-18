@@ -1,7 +1,10 @@
 using UnityEngine;
 
-public interface IHighlightable
+namespace VuvyMerge.Grid
 {
-    void SetHighlight(Color color);
-    void ResetHighlight();
+    public interface IHighlightable
+    {
+        void SetHighlight(Color color);
+        void ResetHighlight();
+    }
 }
