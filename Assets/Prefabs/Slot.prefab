@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2783159533691360911}
   - component: {fileID: 7853661857433840576}
-  - component: {fileID: 1248561817564117155}
+  - component: {fileID: 3169647527417820322}
   m_Layer: 0
-  m_Name: Tile
+  m_Name: Slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -91,7 +91,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1248561817564117155
+--- !u!114 &3169647527417820322
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -100,7 +100,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 296902658051737216}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2566bc6f2f820bc43895e00db38d9fc7, type: 3}
+  m_Script: {fileID: 11500000, guid: 4e01c8dd31003774ab1f00578da7476e, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TileView
+  m_EditorClassIdentifier: Assembly-CSharp::SlotView
   _spriteRenderer: {fileID: 7853661857433840576}

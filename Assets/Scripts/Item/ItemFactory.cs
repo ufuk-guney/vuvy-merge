@@ -1,17 +1,16 @@
 using System;
-using UnityEngine;
 using VContainer.Unity;
 
-public class ItemFactory : IInitializable, IDisposable, IItemSpawner
+public class ItemFactory : IInitializable, IItemSpawner, IDisposable
 {
     private readonly ObjectPool<ItemView> _itemPool;
-    private readonly GridStateManager _gridState;
+    private readonly IGridWriter _gridWriter;
     private readonly BoardItemConfig _database;
 
-    public ItemFactory(BoardItemConfig database, GridStateManager gridState, LifetimeScope scope)
+    public ItemFactory(BoardItemConfig database, IGridWriter gridWriter, LifetimeScope scope)
     {
         _database = database;
-        _gridState = gridState;
+        _gridWriter = gridWriter;
         _itemPool = new ObjectPool<ItemView>(database.ItemPrefab, scope.transform, Constants.Pool.ItemPoolInitialSize);
     }
 
@@ -23,7 +22,7 @@ public class ItemFactory : IInitializable, IDisposable, IItemSpawner
 
     private void OnGenerate()
     {
-        if (!_gridState.TryGetEmptyPosition(out var pos))
+        if (!_gridWriter.TryGetEmptyPosition(out var pos))
         {
             EventManager.Trigger<string>(EventType.OnWarning, "Grid is full!");
             return;
@@ -45,7 +44,7 @@ public class ItemFactory : IInitializable, IDisposable, IItemSpawner
         view.Initialize(chainData.Sprites[level]);
         view.Transform.position = pos.ToWorldPosition();
 
-        _gridState.PlaceItem(pos, data, view);
+        _gridWriter.PlaceItem(pos, data, view);
     }
 
     public void ReturnView(IItemView view)

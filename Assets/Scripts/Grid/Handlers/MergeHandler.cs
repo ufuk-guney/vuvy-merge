@@ -1,20 +1,22 @@
 public class MergeHandler
 {
-    private readonly GridStateManager _gridState;
+    private readonly IGridReader _gridReader;
+    private readonly IGridWriter _gridWriter;
     private readonly IItemSpawner _itemSpawner;
     private readonly BoardItemConfig _database;
 
-    public MergeHandler(GridStateManager gridState, IItemSpawner itemSpawner, BoardItemConfig database)
+    public MergeHandler(IGridReader gridReader, IGridWriter gridWriter, IItemSpawner itemSpawner, BoardItemConfig database)
     {
-        _gridState = gridState;
+        _gridReader = gridReader;
+        _gridWriter = gridWriter;
         _itemSpawner = itemSpawner;
         _database = database;
     }
 
     public bool TryMerge(SlotPosition dragPos, SlotPosition dropPos)
     {
-        var dragSlot = _gridState.GetSlotAt(dragPos);
-        var dropSlot = _gridState.GetSlotAt(dropPos);
+        var dragSlot = _gridReader.GetSlotAt(dragPos);
+        var dropSlot = _gridReader.GetSlotAt(dropPos);
         if (!dragSlot.Data.HasValue || !dropSlot.Data.HasValue) return false;
 
         var dragData = dragSlot.Data.Value;
@@ -22,7 +24,10 @@ public class MergeHandler
 
         if (!dragData.CanMerge(dropData)) return false;
 
-        if (!dragData.CanMerge(dropData, _database))
+        var chainData = _database.ItemChainDataList.Find(c => c.ChainType == dragData.ChainType);
+        if (chainData == null) return false;
+
+        if (!dragData.CanMerge(dropData, chainData.MaxLevel))
         {
             EventManager.Trigger<string>(EventType.OnWarning, "Max level!");
             return false;
@@ -30,11 +35,14 @@ public class MergeHandler
 
         int nextLevel = dragData.Level + 1;
 
-        _gridState.RemoveItem(dragPos);
-        _gridState.RemoveItem(dropPos);
+        var dragView = _gridReader.GetItemViewAt(dragPos);
+        var dropView = _gridReader.GetItemViewAt(dropPos);
 
-        _itemSpawner.ReturnView(dragSlot.View);
-        _itemSpawner.ReturnView(dropSlot.View);
+        _gridWriter.RemoveItem(dragPos);
+        _gridWriter.RemoveItem(dropPos);
+
+        _itemSpawner.ReturnView(dragView);
+        _itemSpawner.ReturnView(dropView);
 
         _itemSpawner.SpawnItem(dragData.ChainType, nextLevel, dropPos);
 

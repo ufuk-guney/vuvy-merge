@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d0786c2e83b8ff4f91c9ceb684c0621, type: 3}
   m_Name: BoardItemDatabase
   m_EditorClassIdentifier: 
-  TilePrefab: {fileID: 1248561817564117155, guid: b4d5f19b82dee3140a130a48f29bd78a, type: 3}
+  TilePrefab: {fileID: 3169647527417820322, guid: b4d5f19b82dee3140a130a48f29bd78a, type: 3}
   ItemPrefab: {fileID: 1055984062273746631, guid: 22e51fd121a70a541b856eaa37cab86a, type: 3}
   ItemChainDataList:
   - {fileID: 11400000, guid: 34b6a053bdf83664cb997eb55af09834, type: 2}

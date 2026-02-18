@@ -6,4 +6,6 @@ public class ItemChainData : ScriptableObject
 {
     public ItemChainType ChainType;
     public List<Sprite> Sprites;
+
+    public int MaxLevel => Sprites.Count - 1;
 }

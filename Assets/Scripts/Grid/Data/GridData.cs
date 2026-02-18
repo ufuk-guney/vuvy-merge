@@ -1,30 +1,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GridStateManager
+public class GridData
 {
-    private Slot[,] _slots;
+    private SlotData[,] _slots;
     private readonly List<SlotPosition> _emptyPositions = new();//this is for o(n)
+    private readonly List<SlotPosition> _mergeablePositions = new();
     private int _width;
     private int _height;
 
-    public void Initialize(GridData gridData)
+    public void Initialize(GridSize gridSize)
     {
-        _width = gridData.Width;
-        _height = gridData.Height;
-        _slots = new Slot[_width, _height];
+        _width = gridSize.Width;
+        _height = gridSize.Height;
+        _slots = new SlotData[_width, _height];
 
         _emptyPositions.Clear();
         for (int x = 0; x < _width; x++)
             for (int y = 0; y < _height; y++)
             {
                 var pos = new SlotPosition(x, y);
-                _slots[x, y] = new Slot(pos);
+                _slots[x, y] = new SlotData(pos);
                 _emptyPositions.Add(pos);
             }
     }
 
-    public Slot GetSlotAt(SlotPosition pos)
+    public SlotData GetSlotAt(SlotPosition pos)
     {
         return _slots[pos.X, pos.Y];
     }
@@ -46,9 +47,9 @@ public class GridStateManager
         return true;
     }
 
-    public void PlaceItem(SlotPosition pos, ItemData data, IItemView view)
+    public void PlaceItem(SlotPosition pos, ItemData data)
     {
-        _slots[pos.X, pos.Y].Place(data, view);
+        _slots[pos.X, pos.Y].Place(data);
         _emptyPositions.Remove(pos);
     }
 
@@ -61,7 +62,7 @@ public class GridStateManager
     public void MoveItem(SlotPosition from, SlotPosition to)
     {
         var fromSlot = _slots[from.X, from.Y];
-        _slots[to.X, to.Y].Place(fromSlot.Data.Value, fromSlot.View);
+        _slots[to.X, to.Y].Place(fromSlot.Data.Value);
         _slots[from.X, from.Y].Clear();
 
         _emptyPositions.Add(from);
@@ -71,5 +72,26 @@ public class GridStateManager
             _emptyPositions[index] = _emptyPositions[^1];
             _emptyPositions.RemoveAt(_emptyPositions.Count - 1);
         }
+    }
+
+    public List<SlotPosition> GetMergeablePositions(ItemData draggedData, SlotPosition excludePos, BoardItemConfig config)
+    {
+        _mergeablePositions.Clear();
+
+        var chainData = config.ItemChainDataList.Find(c => c.ChainType == draggedData.ChainType);
+        if (chainData == null) return _mergeablePositions;
+
+        for (int x = 0; x < _width; x++)
+            for (int y = 0; y < _height; y++)
+            {
+                var pos = new SlotPosition(x, y);
+                if (pos == excludePos) continue;
+
+                var slot = _slots[x, y];
+                if (slot.Data.HasValue && draggedData.CanMerge(slot.Data.Value, chainData.MaxLevel))
+                    _mergeablePositions.Add(pos);
+            }
+
+        return _mergeablePositions;
     }
 }

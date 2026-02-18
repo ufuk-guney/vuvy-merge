@@ -1,4 +1,3 @@
-using System.Linq;
 using DG.Tweening;
 
 public static class GridItemExtensions
@@ -29,14 +28,9 @@ public static class GridItemExtensions
         return a.ChainType == b.ChainType && a.Level == b.Level;
     }
 
-    public static bool CanMerge(this ItemData a, ItemData b, BoardItemConfig config)
+    public static bool CanMerge(this ItemData a, ItemData b, int maxLevel)
     {
         if (!a.CanMerge(b)) return false;
-
-        var chainData = config.ItemChainDataList.FirstOrDefault(c => c.ChainType == a.ChainType);
-        if (chainData == null) return false;
-
-        int nextLevel = a.Level + 1;
-        return nextLevel < chainData.Sprites.Count;
+        return (a.Level + 1) <= maxLevel;
     }
 }

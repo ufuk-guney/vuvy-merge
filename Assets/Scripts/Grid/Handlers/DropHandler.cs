@@ -1,17 +1,19 @@
 public class DropHandler
 {
-    private readonly GridStateManager _gridState;
+    private readonly IGridReader _gridReader;
+    private readonly IGridWriter _gridWriter;
     private readonly MergeHandler _mergeHandler;
 
-    public DropHandler(GridStateManager gridState, MergeHandler mergeHandler)
+    public DropHandler(IGridReader gridReader, IGridWriter gridWriter, MergeHandler mergeHandler)
     {
-        _gridState = gridState;
+        _gridReader = gridReader;
+        _gridWriter = gridWriter;
         _mergeHandler = mergeHandler;
     }
 
     public void HandleDrop(IItemView draggedView, SlotPosition startPos, SlotPosition dropPos)
     {
-        if (!_gridState.IsValidPosition(dropPos))
+        if (!_gridReader.IsValidPosition(dropPos))
         {
             draggedView.AnimateToPosition(startPos);
             return;
@@ -23,10 +25,10 @@ public class DropHandler
             return;
         }
 
-        var dropSlot = _gridState.GetSlotAt(dropPos);
+        var dropSlot = _gridReader.GetSlotAt(dropPos);
         if (dropSlot.IsEmpty)
         {
-            _gridState.MoveItem(startPos, dropPos);
+            _gridWriter.MoveItem(startPos, dropPos);
             draggedView.SnapToPosition(dropPos);
             return;
         }
@@ -36,8 +38,8 @@ public class DropHandler
 
     private void TryMergeOrReturn(IItemView draggedView, SlotPosition startPos, SlotPosition dropPos)
     {
-        var dragSlot = _gridState.GetSlotAt(startPos);
-        var dropSlot = _gridState.GetSlotAt(dropPos);
+        var dragSlot = _gridReader.GetSlotAt(startPos);
+        var dropSlot = _gridReader.GetSlotAt(dropPos);
 
         if (dragSlot.Data.HasValue && dropSlot.Data.HasValue
             && dragSlot.Data.Value.CanMerge(dropSlot.Data.Value)

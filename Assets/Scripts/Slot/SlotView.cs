@@ -1,9 +1,11 @@
 using UnityEngine;
 
-public class TileView : MonoBehaviour, IHighlightable
+public class SlotView : MonoBehaviour, IHighlightable
 {
     [SerializeField] private SpriteRenderer _spriteRenderer;
     private Color _originalColor;
+
+    public IItemView ItemView { get; private set; }
 
     private void Awake()
     {
@@ -18,5 +20,15 @@ public class TileView : MonoBehaviour, IHighlightable
     public void ResetHighlight()
     {
         _spriteRenderer.color = _originalColor;
+    }
+
+    public void SetItemView(IItemView view)
+    {
+        ItemView = view;
+    }
+
+    public void ClearItemView()
+    {
+        ItemView = null;
     }
 }

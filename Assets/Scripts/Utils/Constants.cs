@@ -28,7 +28,6 @@ public static class Constants
 
         public const float TweenDuration = 0.2f;
         public const float SquishScale = 0.9f;
-        // public const float PopScale = 0.9f;
         public const float SquishDuration = 0.16f;
 
         public const float SpawnScaleDuration = 0.3f;

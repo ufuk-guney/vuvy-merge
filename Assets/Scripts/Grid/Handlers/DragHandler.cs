@@ -3,30 +3,30 @@ using UnityEngine;
 
 public class DragHandler
 {
-    private readonly GridStateManager _gridState;
+    private readonly IGridReader _gridReader;
+    private readonly IGridHighlighter _gridHighlighter;
     private readonly DropHandler _dropHandler;
-    private readonly TileManager _tileHandler;
 
     private IItemView _draggedView;
     private SlotPosition _startPos;
     private bool _isDragging;
     private int _originalSortingOrder;
 
-    public DragHandler(GridStateManager gridState, DropHandler dropHandler, TileManager tileHandler)
+    public DragHandler(IGridReader gridReader, IGridHighlighter gridHighlighter, DropHandler dropHandler)
     {
-        _gridState = gridState;
+        _gridReader = gridReader;
+        _gridHighlighter = gridHighlighter;
         _dropHandler = dropHandler;
-        _tileHandler = tileHandler;
     }
 
     public bool TryStartDrag(SlotPosition pos)
     {
-        if (!_gridState.IsValidPosition(pos)) return false;
+        if (!_gridReader.IsValidPosition(pos)) return false;
 
-        var slot = _gridState.GetSlotAt(pos);
+        var slot = _gridReader.GetSlotAt(pos);
         if (slot.IsEmpty) return false;
 
-        _draggedView = slot.View;
+        _draggedView = _gridReader.GetItemViewAt(pos);
         _startPos = pos;
         _isDragging = true;
 
@@ -35,9 +35,7 @@ public class DragHandler
         _draggedView.SpriteRenderer.sortingOrder = Constants.Animation.DragSortingOrder;
 
         if (slot.Data.HasValue)
-        {
-            _tileHandler.HighlightMergeableTiles(slot.Data.Value, _gridState, pos);
-        }
+            _gridHighlighter.HighlightMergeablePositions(slot.Data.Value, pos);
 
         return true;
     }
@@ -53,7 +51,7 @@ public class DragHandler
         if (!_isDragging || _draggedView == null) return;
         _isDragging = false;
 
-        _tileHandler.ResetAllHighlights();
+        _gridHighlighter.ResetHighlights();
 
         _draggedView.Transform.DOScale(1f, Constants.Animation.TweenDuration).SetEase(Ease.OutBack);
         _draggedView.SpriteRenderer.sortingOrder = _originalSortingOrder;
