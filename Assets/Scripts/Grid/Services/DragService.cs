@@ -2,19 +2,19 @@ using UnityEngine;
 
 namespace VuvyMerge.Grid
 {
-    public class DragHandler
+    public class DragService : IInputHandler
     {
         private readonly IGridReader _gridReader;
         private readonly IGridHighlighter _gridHighlighter;
-        private readonly DropHandler _dropHandler;
+        private readonly DropService _dropService;
 
         private DragSession? _activeSession;
 
-        public DragHandler(IGridReader gridReader, IGridHighlighter gridHighlighter, DropHandler dropHandler)
+        public DragService(IGridReader gridReader, IGridHighlighter gridHighlighter, DropService dropService)
         {
             _gridReader = gridReader;
             _gridHighlighter = gridHighlighter;
-            _dropHandler = dropHandler;
+            _dropService = dropService;
         }
 
         public bool TryStartDrag(SlotPosition pos)
@@ -49,7 +49,7 @@ namespace VuvyMerge.Grid
 
             _gridHighlighter.ResetHighlights();
             session.View.EndDrag(session.OriginalSortingOrder);
-            _dropHandler.HandleDrop(session.View, session.StartPos, dropPos);
+            _dropService.HandleDrop(session.View, session.StartPos, dropPos);
         }
 
         private readonly struct DragSession

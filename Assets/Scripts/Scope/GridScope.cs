@@ -32,9 +32,9 @@ namespace VuvyMerge
                     .As<IGridWriter>()
                     .As<IGridHighlighter>();
 
-                builder.Register<DragHandler>(Lifetime.Scoped);
-                builder.Register<DropHandler>(Lifetime.Scoped);
-                builder.Register<MergeHandler>(Lifetime.Scoped);
+                builder.Register<DragService>(Lifetime.Scoped).As<IInputHandler>();
+                builder.Register<DropService>(Lifetime.Scoped);
+                builder.Register<MergeService>(Lifetime.Scoped);
 
                 builder.RegisterEntryPoint<ItemFactory>(Lifetime.Scoped).AsSelf().As<IItemSpawner>();
                 builder.RegisterEntryPoint<GridInputController>(Lifetime.Scoped);

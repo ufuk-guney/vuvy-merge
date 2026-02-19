@@ -1,16 +1,16 @@
 namespace VuvyMerge.Grid
 {
-    public class DropHandler
+    public class DropService
     {
         private readonly IGridReader _gridReader;
         private readonly IGridWriter _gridWriter;
-        private readonly MergeHandler _mergeHandler;
+        private readonly MergeService _mergeService;
 
-        public DropHandler(IGridReader gridReader, IGridWriter gridWriter, MergeHandler mergeHandler)
+        public DropService(IGridReader gridReader, IGridWriter gridWriter, MergeService mergeService)
         {
             _gridReader = gridReader;
             _gridWriter = gridWriter;
-            _mergeHandler = mergeHandler;
+            _mergeService = mergeService;
         }
 
         public void HandleDrop(IItemView draggedView, SlotPosition startPos, SlotPosition dropPos)
@@ -40,7 +40,7 @@ namespace VuvyMerge.Grid
 
         private void HandleOccupiedDrop(IItemView draggedView, SlotPosition startPos, SlotPosition dropPos)
         {
-            if (_mergeHandler.TryMerge(startPos, dropPos)) return;
+            if (_mergeService.TryMerge(startPos, dropPos)) return;
             draggedView.AnimateToPosition(startPos);
         }
     }

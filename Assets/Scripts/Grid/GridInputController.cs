@@ -7,16 +7,16 @@ namespace VuvyMerge.Grid
 {
     public class GridInputController : IInitializable, IDisposable
     {
-        private readonly DragHandler _dragHandler;
+        private readonly IInputHandler _inputHandler;
         private readonly Camera _camera;
 
         private readonly InputAction _pressAction;
         private readonly InputAction _positionAction;
         private bool _isDragging;
 
-        public GridInputController(DragHandler dragHandler)
+        public GridInputController(IInputHandler inputHandler)
         {
-            _dragHandler = dragHandler;
+            _inputHandler = inputHandler;
             _camera = Camera.main;
 
             _pressAction = new InputAction("Press", InputActionType.Button, "<Pointer>/press");
@@ -37,7 +37,7 @@ namespace VuvyMerge.Grid
             _isDragging = false;
             if (ctx.control.device is not Pointer pointer || !pointer.added) return;//written for device simulator input
             if (pointer.position.ReadValue().ScreenToGrid(_camera) is not { } gridPos) return;
-            _isDragging = _dragHandler.TryStartDrag(gridPos);
+            _isDragging = _inputHandler.TryStartDrag(gridPos);
         }
 
         private void OnPointerMoved(InputAction.CallbackContext ctx)
@@ -45,7 +45,7 @@ namespace VuvyMerge.Grid
             if (!_isDragging) return;
             if (ctx.control.device is not Pointer pointer || !pointer.added) return;
             if (ctx.ReadValue<Vector2>().ScreenToWorld(_camera) is not { } worldPos) return;
-            _dragHandler.UpdateDragPosition(worldPos);
+            _inputHandler.UpdateDragPosition(worldPos);
         }
 
         private void OnPressCanceled(InputAction.CallbackContext ctx)
@@ -53,7 +53,7 @@ namespace VuvyMerge.Grid
             _isDragging = false;
             if (ctx.control.device is not Pointer pointer || !pointer.added) return;
             if (pointer.position.ReadValue().ScreenToGrid(_camera) is not { } dropGridPos) return;
-            _dragHandler.EndDrag(dropGridPos);
+            _inputHandler.EndDrag(dropGridPos);
         }
 
         public void Dispose()

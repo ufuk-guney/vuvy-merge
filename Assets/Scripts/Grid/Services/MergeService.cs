@@ -3,14 +3,14 @@ using VuvyMerge.Data;
 
 namespace VuvyMerge.Grid
 {
-    public class MergeHandler
+    public class MergeService
     {
         private readonly IGridReader _gridReader;
         private readonly IGridWriter _gridWriter;
         private readonly IItemSpawner _itemSpawner;
         private readonly Dictionary<ItemChainType, ItemChainData> _chainLookup;
 
-        public MergeHandler(IGridReader gridReader, IGridWriter gridWriter, IItemSpawner itemSpawner, BoardItemConfig database)
+        public MergeService(IGridReader gridReader, IGridWriter gridWriter, IItemSpawner itemSpawner, BoardItemConfig database)
         {
             _gridReader = gridReader;
             _gridWriter = gridWriter;
